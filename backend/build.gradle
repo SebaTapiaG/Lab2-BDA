@@ -1,17 +1,27 @@
 plugins {
     id 'java'
+    id 'org.springframework.boot' version '3.0.0' // Usa la versión actual según tu proyecto
+    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
 }
 
-group = 'org.example'
-version = '1.0-SNAPSHOT'
+group = 'com.miempresa'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '17' // Versión de Java que estás usando
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter' // Starter básico de Spring Boot
+    implementation 'org.springframework.boot:spring-boot-starter-web' // Spring Web para APIs REST
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa' // Spring Data JPA para acceso a DB
+    implementation 'org.sql2o:sql2o:1.6.0' // Agrega la versión actual de Sql2o
+    runtimeOnly 'com.mysql:mysql-connector-j' // Conector de MySQL (o el de tu base de datos)
+
     testImplementation platform('org.junit:junit-bom:5.9.1')
     testImplementation 'org.junit.jupiter:junit-jupiter'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test' // Dependencias para pruebas
 }
 
 test {
