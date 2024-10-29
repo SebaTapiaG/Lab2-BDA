@@ -13,13 +13,16 @@ public class ClienteEntity {
 
     private int id_cliente;
     private String nombre;
+
+    private String contrasena;
     private String direccion;
     private String email;
     private String telefono;
 
-    public ClienteEntity(int id_cliente, String nombre, String direccion, String email, String telefono) {
+    public ClienteEntity(int id_cliente, String nombre, String contrasena,String direccion, String email, String telefono) {
         this.id_cliente = id_cliente;
         this.nombre = nombre;
+        this.contrasena = contrasena;
         this.direccion = direccion;
         this.email = email;
         this.telefono = telefono;
@@ -63,6 +66,14 @@ public class ClienteEntity {
 
     public void setTelefono(String telefono) {
         this.telefono = telefono;
+    }
+
+    public String getContrasena() {
+        return contrasena;
+    }
+
+    public void setContrasena(String contrasena) {
+        this.contrasena = contrasena;
     }
 
 

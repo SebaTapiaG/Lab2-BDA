@@ -41,6 +41,18 @@ public class ClienteRepositoryImp implements ClienteRepository{
     }
 
     @Override
+    public ClienteEntity findByEmail(String email) {
+        try(Connection conn = sql2o.open()){
+            return conn.createQuery("SELECT * FROM cliente WHERE email = :email")
+                    .addParameter("email", email)
+                    .executeAndFetchFirst(ClienteEntity.class);
+        } catch (Exception e){
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
+
+    @Override
     public ClienteEntity create(ClienteEntity cliente) {
         try(Connection conn = sql2o.open()){
             conn.createQuery("INSERT INTO cliente (nombre, telefono, email, direccion) VALUES (:nombre, :apellido, :telefono, :email, :direccion)", true)

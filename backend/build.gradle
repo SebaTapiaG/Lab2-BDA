@@ -17,6 +17,10 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web' // Spring Web para APIs REST
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa' // Spring Data JPA para acceso a DB
     implementation 'org.sql2o:sql2o:1.6.0' // Agrega la versión actual de Sql2o
+
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'io.jsonwebtoken:jjwt:0.12.5' // JWT para autenticación
+
     runtimeOnly 'com.mysql:mysql-connector-j' // Conector de MySQL (o el de tu base de datos)
 
     testImplementation platform('org.junit:junit-bom:5.9.1')

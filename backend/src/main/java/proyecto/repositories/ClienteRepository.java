@@ -9,6 +9,8 @@ public interface ClienteRepository {
     List<ClienteEntity> findAll();
     ClienteEntity findById(int id_cliente);
 
+    ClienteEntity findByEmail(String email);
+
     ClienteEntity create(ClienteEntity cliente);
 
     ClienteEntity update(ClienteEntity cliente);

@@ -7,6 +7,10 @@ public interface ProductoRepository {
     List<ProductoEntity> findAll();
     ProductoEntity findById(int id_producto);
 
+    ProductoEntity findByNombre(String nombre);
+
+    List<ProductoEntity> findByCategoria(int id_categoria);
+
     ProductoEntity create(ProductoEntity producto);
     ProductoEntity update(ProductoEntity producto);
     boolean delete(int id_producto);

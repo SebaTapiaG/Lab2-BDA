@@ -38,6 +38,18 @@ public class OrdenRepositoryImp implements OrdenRepository {
     }
 
     @Override
+    public List<OrdenEntity> findByCliente(int id_cliente) {
+        try(Connection conn = sql2o.open()){
+            return conn.createQuery("SELECT * FROM orden WHERE id_cliente = :id_cliente")
+                    .addParameter("id_cliente", id_cliente)
+                    .executeAndFetch(OrdenEntity.class);
+        } catch (Exception e){
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
+
+    @Override
     public OrdenEntity create(OrdenEntity orden) {
         try(Connection conn = sql2o.open()){
             conn.createQuery("INSERT INTO orden (fecha, total, id_cliente) VALUES (:fecha, :total, :id_cliente)", true)

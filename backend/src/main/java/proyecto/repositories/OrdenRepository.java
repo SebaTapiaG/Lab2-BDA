@@ -10,6 +10,8 @@ public interface OrdenRepository {
     List<OrdenEntity> findAll();
     OrdenEntity findById(int id_orden);
 
+    List<OrdenEntity> findByCliente(int id_cliente);
+
     OrdenEntity create(OrdenEntity orden);
 
     OrdenEntity update(OrdenEntity orden);

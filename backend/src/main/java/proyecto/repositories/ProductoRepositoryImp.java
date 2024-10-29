@@ -41,6 +41,31 @@ public class ProductoRepositoryImp implements ProductoRepository {
     }
 
     @Override
+    public ProductoEntity findByNombre(String nombre) {
+        try(Connection conn = sql2o.open()){
+            return conn.createQuery("SELECT * FROM producto WHERE nombre = :nombre")
+                    .addParameter("nombre", nombre)
+                    .executeAndFetchFirst(ProductoEntity.class);
+        } catch (Exception e){
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
+
+    @Override
+  //Retorna la lista de productos de una categoria
+    public List<ProductoEntity> findByCategoria(int id_categoria) {
+        try(Connection conn = sql2o.open()){
+            return conn.createQuery("SELECT * FROM producto WHERE id_categoria = :id_categoria")
+                    .addParameter("id_categoria", id_categoria)
+                    .executeAndFetch(ProductoEntity.class);
+        } catch (Exception e){
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
+
+    @Override
     public ProductoEntity create(ProductoEntity producto) {
         try(Connection conn = sql2o.open()){
             conn.createQuery("INSERT INTO producto (nombre, precio, stock, id_categoria) VALUES (:nombre, :precio, :stock, :id_categoria)", true)
