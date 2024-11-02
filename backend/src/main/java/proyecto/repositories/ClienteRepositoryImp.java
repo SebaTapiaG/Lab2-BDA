@@ -14,8 +14,7 @@ public class ClienteRepositoryImp implements ClienteRepository{
     @Autowired
     private Sql2o sql2o;
 
-    @Autowired
-    ClienteRepositoryImp clienteRepository;
+
 
     @Override
     public List<ClienteEntity> findAll() {

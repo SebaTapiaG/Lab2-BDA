@@ -9,14 +9,16 @@ import proyecto.repositories.ClienteRepository;
 import proyecto.utils.JwtUtil;
 import proyecto.utils.EncriptacionUtil;
 
+import java.util.List;
+
 @Service
 public class ClienteService {
 
     @Autowired
-    ClienteRepository clienteRepository;
+    JwtUtil jwtUtil;
 
     @Autowired
-    JwtUtil jwtUtil;
+    ClienteRepository clienteRepository;
 
     public ClienteEntity register(ClienteEntity cliente){
         //El cliente existe?
@@ -46,4 +48,25 @@ public class ClienteService {
         }
         return null;
     }
+
+    public ClienteEntity update(ClienteEntity cliente){
+        return clienteRepository.update(cliente);
+    }
+
+    public boolean delete(int id_cliente){
+        return clienteRepository.delete(id_cliente);
+    }
+
+    public ClienteEntity findById(int id_cliente){
+        return clienteRepository.findById(id_cliente);
+    }
+
+    public ClienteEntity findByEmail(String email){
+        return clienteRepository.findByEmail(email);
+    }
+
+    public List<ClienteEntity> findAll(){
+        return clienteRepository.findAll();
+    }
+
 }

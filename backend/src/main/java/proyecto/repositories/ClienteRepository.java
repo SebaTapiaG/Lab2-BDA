@@ -11,6 +11,7 @@ public interface ClienteRepository {
 
     ClienteEntity findByEmail(String email);
 
+
     ClienteEntity create(ClienteEntity cliente);
 
     ClienteEntity update(ClienteEntity cliente);
