@@ -18,7 +18,6 @@ public class CategoriaController {
     }
 
     @GetMapping("/categoria")
-
     public ResponseEntity<List<Object>> findAll(){
         return categoriaService.findAll();
     }
@@ -33,12 +32,12 @@ public class CategoriaController {
         return categoriaService.create(categoria);
     }
 
-    @GetMapping("/categoria")
+    @PutMapping("/categoria")
     public ResponseEntity<Object> update(@RequestBody CategoriaEntity categoria) {
         return categoriaService.update(categoria);
     }
 
-    @GetMapping("/categoria/{id_categoria}")
+    @DeleteMapping("/categoria/{id_categoria}")
     public ResponseEntity<Object> delete(@PathVariable int id_categoria) {
         return categoriaService.delete(id_categoria);
     }

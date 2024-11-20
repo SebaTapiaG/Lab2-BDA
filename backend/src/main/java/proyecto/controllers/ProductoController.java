@@ -1,13 +1,13 @@
 package proyecto.controllers;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.*;
+import proyecto.entities.ProductoEntity;
 import proyecto.service.ProductoService;
 import proyecto.service.CategoriaService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @CrossOrigin("*")
@@ -22,20 +22,34 @@ public class ProductoController {
 
 
     @GetMapping("")
-    public ResponseEntity<?> findAll(){
-        return ResponseEntity.ok().body(productoService.findAll());
+    public ResponseEntity<List<Object>> findAll(){
+        return productoService.findAll();
     }
 
-    @GetMapping("/categoria/{id_categoria}")
-    public ResponseEntity<?> findByCategoria(int id_categoria){
-        return ResponseEntity.ok().body(productoService.findByCategoria(id_categoria));
+    @GetMapping("/producto/{id_categoria}")
+    public ResponseEntity<?> findByCategoria(@PathVariable int id_categoria){
+        return productoService.findByCategoria(id_categoria);
     }
 
-    @GetMapping("/{id_producto}")
-    public ResponseEntity<?> findById(int id_producto) {
-        return ResponseEntity.ok().body(productoService.findById(id_producto));
+    @GetMapping("/producto/{id_producto}")
+    public ResponseEntity<Object> findById(@PathVariable int id_producto) {
+        return productoService.findById(id_producto);
 
+    }
 
+    @PostMapping("/producto/create")
+    public ResponseEntity<Object> create(@RequestBody ProductoEntity producto){
+        return productoService.create(producto);
+    }
+
+    @PutMapping("/producto/update")
+    public ResponseEntity<Object> update(@RequestBody ProductoEntity producto){
+        return productoService.update(producto);
+    }
+
+    @DeleteMapping("/producto/delete/{id_producto}")
+    public ResponseEntity<Object> delete(@PathVariable int id_producto){
+        return productoService.delete(id_producto);
     }
 
 

@@ -25,23 +25,23 @@ public class Detalle_OrdenController {
         return detalle_ordenService.findAll();
     }
 
-    @GetMapping("/{id_detalle_orden}")
+    @GetMapping("/detalle_orden/{id_detalle_orden}")
     public ResponseEntity<Object> findById(@PathVariable int id_detalle_orden) {
         return detalle_ordenService.findById(id_detalle_orden);
     }
 
-    @GetMapping("/create")
+    @GetMapping("/detalle_orden/create")
     public ResponseEntity<Object> create(@RequestBody Detalle_OrdenEntity detalle_orden) {
         return detalle_ordenService.create(detalle_orden);
     }
 
-    @GetMapping("/update")
+    @PutMapping("/detalle_orden/update")
     public ResponseEntity<Object> update(@RequestBody Detalle_OrdenEntity detalle_orden) {
         return detalle_ordenService.update(detalle_orden);
     }
 
-    @GetMapping("/delete/{id_detalle_orden}")
-    public ResponseEntity<Object> delete(int id_detalle_orden) {
+    @DeleteMapping("/detalle_orden/delete/{id_detalle_orden}")
+    public ResponseEntity<Object> delete(@PathVariable int id_detalle_orden) {
         return ResponseEntity.ok().body(detalle_ordenService.delete(id_detalle_orden));
     }
 

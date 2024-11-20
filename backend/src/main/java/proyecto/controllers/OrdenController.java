@@ -2,13 +2,12 @@ package proyecto.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import proyecto.entities.OrdenEntity;
 import proyecto.service.ClienteService;
 import proyecto.service.OrdenService;
+
+import java.util.List;
 
 @RestController
 @CrossOrigin("*")
@@ -20,36 +19,33 @@ public class OrdenController {
        this.ordenService = ordenService;
     }
 
-    @Autowired
-    ClienteService clienteService;
-
     @GetMapping("")
-    public ResponseEntity<?> findAll(){
-        return ResponseEntity.ok().body(ordenService.findAll());
+    public ResponseEntity<List<Object>> findAll(){
+        return ordenService.findAll();
     }
 
-    @GetMapping("/{id_orden}")
-    public ResponseEntity<?> findById(int id_orden) {
-        return ResponseEntity.ok().body(ordenService.findById(id_orden));
+    @GetMapping("/orden/{id_orden}")
+    public ResponseEntity<?> findById(@PathVariable int id_orden) {
+        return ordenService.findById(id_orden);
     }
 
-    @GetMapping("/create")
-    public ResponseEntity<?> create(OrdenEntity orden) {
-        return ResponseEntity.ok().body(ordenService.create(orden));
+    @GetMapping("/orden/create")
+    public ResponseEntity<Object> create(@RequestBody OrdenEntity orden) {
+        return ordenService.create(orden);
     }
 
-    @GetMapping("/update")
-    public ResponseEntity<?> update(OrdenEntity orden) {
-        return ResponseEntity.ok().body(ordenService.update(orden));
+    @PutMapping("/orden/update")
+    public ResponseEntity<Object> update(@RequestBody OrdenEntity orden) {
+        return ordenService.update(orden);
     }
 
-    @GetMapping("/delete")
-    public ResponseEntity<?> delete(int id_orden) {
-        return ResponseEntity.ok().body(ordenService.delete(id_orden));
+    @DeleteMapping("/orden/delete")
+    public ResponseEntity<Object> delete(int id_orden) {
+        return ordenService.delete(id_orden);
     }
 
-    @GetMapping("/findByCliente")
-    public ResponseEntity<?> findByCliente(int id_cliente) {
-        return ResponseEntity.ok().body(ordenService.findByCliente(id_cliente));
+    @GetMapping("/orden/findByCliente")
+    public ResponseEntity<List<Object>> findByCliente(@PathVariable int id_cliente) {
+        return ordenService.findByCliente(id_cliente);
     }
 }

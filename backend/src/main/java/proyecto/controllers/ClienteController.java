@@ -24,34 +24,33 @@ public class ClienteController {
         return clienteService.findAll();
     }
 
-    @GetMapping("/{id_cliente}")
+    @GetMapping("/cliente/{id_cliente}")
     public ResponseEntity<Object> findById(@PathVariable int id_cliente) {
         return clienteService.findById(id_cliente);
     }
 
-    @GetMapping("/email/{email}")
+    @GetMapping("/cliente/email/{email}")
     public ResponseEntity<Object> findByEmail(@PathVariable String email) {
         return clienteService.findByEmail(email);
     }
 
-    @GetMapping("/login")
+    @GetMapping("/cliente/login")
     public ResponseEntity<Object> loginUser(@RequestBody ClienteEntity user) {
         return clienteService.loginUser(user.getNombre(), user.getContrasena());
     }
 
-    @PostMapping("/register")
+    @PostMapping("/cliente/register")
     public ResponseEntity<Object> createUser(@RequestBody ClienteEntity user) {
         return clienteService.createUser(user);
     }
 
 
-    @GetMapping("/update")
+    @PutMapping("/cliente/update")
     public ResponseEntity<?> update(@RequestBody ClienteEntity cliente) {
         return clienteService.update(cliente);
     }
 
-    @GetMapping("/delete/{id_cliente}")
-
+    @DeleteMapping("/cliente/delete/{id_cliente}")
     public ResponseEntity<?> delete(@PathVariable int id_cliente) {
         return clienteService.delete(id_cliente);
     }
