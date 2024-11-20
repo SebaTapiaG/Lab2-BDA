@@ -15,13 +15,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 public class ProductoController {
 
-    @Autowired
-    ProductoService productoService;
-    @Autowired
-    CategoriaService categoriaService;
+    private final ProductoService productoService;
+    public ProductoController(ProductoService productoService){
+        this.productoService = productoService;
+    }
+
 
     @GetMapping("")
-
     public ResponseEntity<?> findAll(){
         return ResponseEntity.ok().body(productoService.findAll());
     }

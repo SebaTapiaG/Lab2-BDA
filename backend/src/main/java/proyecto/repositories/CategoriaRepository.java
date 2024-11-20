@@ -2,18 +2,20 @@ package proyecto.repositories;
 
 
 import java.util.List;
+
+import org.springframework.http.ResponseEntity;
 import proyecto.entities.CategoriaEntity;
 
 public interface CategoriaRepository {
 
-    List<CategoriaEntity> findAll();
-    CategoriaEntity findById(int id_categoria);
+    ResponseEntity <List<Object>> findAll();
+    ResponseEntity<Object> findById(int id_categoria);
 
-    CategoriaEntity create(CategoriaEntity categoria);
+    ResponseEntity<Object> create(CategoriaEntity categoria);
 
-    CategoriaEntity update(CategoriaEntity categoria);
+    ResponseEntity<Object> update(CategoriaEntity categoria);
 
-    boolean delete(int id_categoria);
+    ResponseEntity<Object> delete(int id_categoria);
 
 
 

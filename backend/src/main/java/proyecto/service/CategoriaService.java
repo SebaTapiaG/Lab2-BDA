@@ -1,6 +1,7 @@
 package proyecto.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import proyecto.entities.CategoriaEntity;
 import proyecto.repositories.CategoriaRepository;
@@ -13,25 +14,23 @@ public class CategoriaService {
     @Autowired
     CategoriaRepository categoriaRepository;
 
-    public List<CategoriaEntity> findAll(){
+    public ResponseEntity<List<Object>> findAll(){
         return categoriaRepository.findAll();
     }
-
-    public CategoriaEntity findById(int id_categoria){
+    public ResponseEntity<Object> findById(int id_categoria){
         return categoriaRepository.findById(id_categoria);
     }
 
-    public CategoriaEntity create(CategoriaEntity categoria){
+    public ResponseEntity<Object> create(CategoriaEntity categoria){
         return categoriaRepository.create(categoria);
     }
 
-    public CategoriaEntity update(CategoriaEntity categoria){
+    public ResponseEntity<Object> update(CategoriaEntity categoria){
         return categoriaRepository.update(categoria);
     }
 
-    public boolean delete(int id_categoria){
+    public ResponseEntity<Object> delete(int id_categoria){
         return categoriaRepository.delete(id_categoria);
     }
-
 
 }

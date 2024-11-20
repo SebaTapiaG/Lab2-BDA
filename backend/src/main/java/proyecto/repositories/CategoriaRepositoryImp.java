@@ -1,6 +1,7 @@
 package proyecto.repositories;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
@@ -15,65 +16,69 @@ public class CategoriaRepositoryImp implements CategoriaRepository{
     private Sql2o sql2o;
 
     @Override
-    public List<CategoriaEntity> findAll() {
+    public ResponseEntity<List<Object>> findAll() {
         try(Connection conn = sql2o.open()){
-            return conn.createQuery("SELECT * FROM categoria")
+            List<CategoriaEntity> categorias = conn.createQuery("SELECT * FROM categoria")
                     .executeAndFetch(CategoriaEntity.class);
+            List<Object> result = (List) categorias;
+            if(categorias.isEmpty()){
+                return ResponseEntity.noContent().build();
+            }
+            return ResponseEntity.ok(result);
         } catch (Exception e){
-            System.out.println(e.getMessage());
-            return null;
+            return ResponseEntity.status(500).body(null);
         }
     }
 
     @Override
-    public CategoriaEntity findById(int id_categoria) {
+    public ResponseEntity<Object> findById(int id_categoria) {
         try(Connection conn = sql2o.open()){
-            return conn.createQuery("SELECT * FROM categoria WHERE id_categoria = :id_categoria")
+            CategoriaEntity categoria = conn.createQuery("SELECT * FROM categoria WHERE id_categoria = :id_categoria")
                     .addParameter("id_categoria", id_categoria)
                     .executeAndFetchFirst(CategoriaEntity.class);
+            if(categoria == null){
+                return ResponseEntity.notFound().build();
+            }
+            return ResponseEntity.ok(categoria);
         } catch (Exception e){
-            System.out.println(e.getMessage());
-            return null;
+            return ResponseEntity.status(500).body(null);
         }
     }
 
     @Override
-    public CategoriaEntity create(CategoriaEntity categoria) {
+    public ResponseEntity<Object> create(CategoriaEntity categoria) {
         try(Connection conn = sql2o.open()){
             conn.createQuery("INSERT INTO categoria (nombre) VALUES (:nombre)", true)
                     .addParameter("nombre", categoria.getNombre())
                     .executeUpdate();
-            return categoria;
+            return ResponseEntity.ok(categoria);
         } catch (Exception e){
-            System.out.println(e.getMessage());
-            return null;
+            return ResponseEntity.status(500).body(null);
         }
     }
 
     @Override
-    public CategoriaEntity update(CategoriaEntity categoria) {
+    public ResponseEntity<Object> update(CategoriaEntity categoria) {
         try(Connection conn = sql2o.open()){
             conn.createQuery("UPDATE categoria SET nombre = :nombre WHERE id_categoria = :id_categoria")
                     .addParameter("nombre", categoria.getNombre())
                     .addParameter("id_categoria", categoria.getId_categoria())
                     .executeUpdate();
-            return categoria;
+            return ResponseEntity.ok(categoria);
         } catch (Exception e){
-            System.out.println(e.getMessage());
-            return null;
+            return ResponseEntity.status(500).body(null);
         }
     }
 
     @Override
-    public boolean delete(int id_categoria) {
+    public ResponseEntity<Object> delete(int id_categoria) {
         try(Connection conn = sql2o.open()){
             conn.createQuery("DELETE FROM categoria WHERE id_categoria = :id_categoria")
                     .addParameter("id_categoria", id_categoria)
                     .executeUpdate();
-            return true;
+            return ResponseEntity.ok().build();
         } catch (Exception e){
-            System.out.println(e.getMessage());
-            return false;
+            return ResponseEntity.status(500).body(null);
         }
     }
 

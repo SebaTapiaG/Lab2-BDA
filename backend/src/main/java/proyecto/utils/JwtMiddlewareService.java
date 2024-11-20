@@ -60,7 +60,8 @@ public class JwtMiddlewareService{
         String username = claims.get("name", String.class);
 
         ClienteEntity clienteEntity = new ClienteEntity();
-        clienteEntity.s;
-        userModel.setName(username);
-        return userModel;
+        clienteEntity.setId_cliente(id.intValue());
+        clienteEntity.setNombre(username);
+        return clienteEntity;
     }
+}

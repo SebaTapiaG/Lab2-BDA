@@ -1,19 +1,21 @@
 package proyecto.repositories;
+import org.springframework.http.ResponseEntity;
 import proyecto.entities.ProductoEntity;
 
 import java.util.List;
 
 public interface ProductoRepository {
-    List<ProductoEntity> findAll();
-    ProductoEntity findById(int id_producto);
 
-    ProductoEntity findByNombre(String nombre);
+    ResponseEntity <List<Object>> findAll();
+    public ResponseEntity<Object> findById(int id_producto);
 
-    List<ProductoEntity> findByCategoria(int id_categoria);
+    public ResponseEntity<Object> findByNombre(String nombre);
 
-    ProductoEntity create(ProductoEntity producto);
-    ProductoEntity update(ProductoEntity producto);
-    boolean delete(int id_producto);
+    ResponseEntity <List<Object>> findByCategoria(int id_categoria);
+
+    ResponseEntity<Object> create(ProductoEntity producto);
+    ResponseEntity<Object>  update(ProductoEntity producto);
+    ResponseEntity<Object> delete(int id_producto);
 
 
 }

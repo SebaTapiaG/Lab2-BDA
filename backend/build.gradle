@@ -1,34 +1,32 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '3.0.0' // Usa la versión actual según tu proyecto
-    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+    id 'org.springframework.boot' version '3.3.5'
+    id 'io.spring.dependency-management' version '1.1.6'
 }
 
-group = 'com.miempresa'
+group = 'proyecto'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '17' // Versión de Java que estás usando
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter' // Starter básico de Spring Boot
-    implementation 'org.springframework.boot:spring-boot-starter-web' // Spring Web para APIs REST
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa' // Spring Data JPA para acceso a DB
-    implementation 'org.sql2o:sql2o:1.6.0' // Agrega la versión actual de
-
-
-    implementation 'org.springframework.boot:spring-boot-starter-security'
-    implementation 'io.jsonwebtoken:jjwt:0.12.5' // JWT para autenticación
-
-    runtimeOnly 'org.postgresql:postgresql:42.6.0'
-
-    testImplementation platform('org.junit:junit-bom:5.9.1')
-    testImplementation 'org.junit.jupiter:junit-jupiter'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test' // Dependencias para pruebas
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'io.jsonwebtoken:jjwt-api:0.12.2'
+    implementation group: 'org.sql2o', name: 'sql2o', version: '1.6.0'
+    implementation group: 'org.postgresql', name: 'postgresql', version: '42.3.8'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.2'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.2'
+    testImplementation 'junit:junit:4.+'
 }
 
-test {
+tasks.named('test') {
     useJUnitPlatform()
 }

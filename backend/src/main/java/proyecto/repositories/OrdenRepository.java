@@ -1,5 +1,6 @@
 package proyecto.repositories;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 import proyecto.entities.OrdenEntity;
 
@@ -7,14 +8,15 @@ import java.util.List;
 
 @Repository
 public interface OrdenRepository {
-    List<OrdenEntity> findAll();
-    OrdenEntity findById(int id_orden);
+    ResponseEntity<List<Object>> findAll();
 
-    List<OrdenEntity> findByCliente(int id_cliente);
+    ResponseEntity findById(int id_orden);
 
-    OrdenEntity create(OrdenEntity orden);
+    ResponseEntity<List<Object>> findByCliente(int id_cliente);
 
-    OrdenEntity update(OrdenEntity orden);
+    ResponseEntity create(OrdenEntity orden);
 
-    boolean delete(int id_orden);
+    ResponseEntity update(OrdenEntity orden);
+
+    ResponseEntity delete(int id_orden);
 }

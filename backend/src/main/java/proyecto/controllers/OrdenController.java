@@ -15,8 +15,10 @@ import proyecto.service.OrdenService;
 @RequestMapping("/api/orden")
 public class OrdenController {
 
-    @Autowired
-    OrdenService ordenService;
+   private final OrdenService ordenService;
+   public OrdenController(OrdenService ordenService) {
+       this.ordenService = ordenService;
+    }
 
     @Autowired
     ClienteService clienteService;

@@ -3,11 +3,11 @@ package proyecto.service;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import proyecto.entities.ClienteEntity;
 import proyecto.repositories.ClienteRepository;
-import proyecto.utils.JwtUtil;
-import proyecto.utils.EncriptacionUtil;
+
 
 import java.util.List;
 
@@ -15,58 +15,45 @@ import java.util.List;
 public class ClienteService {
 
     @Autowired
-    JwtUtil jwtUtil;
-
-    @Autowired
     ClienteRepository clienteRepository;
 
-    public ClienteEntity register(ClienteEntity cliente){
-        //El cliente existe?
-        if(clienteRepository.findByEmail(cliente.getEmail()) != null){
-            return null;
-        }
-        //Encriptar contraseña
-        cliente.setContrasena(EncriptacionUtil.encriptar(cliente.getContrasena()));
-
-        //Guardar cliente
-        return clienteRepository.create(cliente);
+    // Recupera todos los clientes
+    public ResponseEntity<List<Object>> findAll() {
+        return clienteRepository.findAll();
     }
-
-    public String login(ClienteEntity cliente){
-        //Buscar cliente
-        ClienteEntity clienteDB = clienteRepository.findByEmail(cliente.getEmail());
-        //Validar contraseña
-       if(clienteDB != null && EncriptacionUtil.desencriptar(clienteDB.getContrasena()).equals(cliente.getContrasena())){
-            return jwtUtil.generateToken(clienteDB);
-        }
-        return null;
-    }
-
-    public ClienteEntity getCliente(String token){
-        if(jwtUtil.validateToken(token)){
-            return clienteRepository.findByEmail(jwtUtil.extractName(token));
-        }
-        return null;
-    }
-
-    public ClienteEntity update(ClienteEntity cliente){
-        return clienteRepository.update(cliente);
-    }
-
-    public boolean delete(int id_cliente){
-        return clienteRepository.delete(id_cliente);
-    }
-
-    public ClienteEntity findById(int id_cliente){
+    // Recupera un cliente por su ID
+    public ResponseEntity<Object> findById(int id_cliente) {
         return clienteRepository.findById(id_cliente);
     }
 
-    public ClienteEntity findByEmail(String email){
+    // Recupera un cliente por su nombre
+    public ResponseEntity<Object> findByName(String name) {
+        return clienteRepository.findByName(name);
+    }
+
+    // Crea un nuevo cliente
+    public ResponseEntity<Object> createUser(ClienteEntity user) {
+        return clienteRepository.createUser(user);
+    }
+
+    // Recupera un cliente por su correo electrónico
+    public ResponseEntity<Object> findByEmail(String email) {
         return clienteRepository.findByEmail(email);
     }
 
-    public List<ClienteEntity> findAll(){
-        return clienteRepository.findAll();
+
+    // Actualiza un cliente
+    public ResponseEntity<Object> update(ClienteEntity cliente) {
+        return clienteRepository.update(cliente);
     }
 
+    // Elimina un cliente por su ID
+    public ResponseEntity<Object> delete(int id_cliente) {
+        return clienteRepository.delete(id_cliente);
+    }
+
+    // Realiza el login de un cliente
+    public ResponseEntity<Object> loginUser(String name, String password) {
+        return clienteRepository.loginUser(name, password);
+    }
 }

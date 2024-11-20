@@ -1,6 +1,7 @@
 package proyecto.repositories;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
@@ -15,57 +16,68 @@ public class OrdenRepositoryImp implements OrdenRepository {
     private Sql2o sql2o;
 
     @Override
-    public List<OrdenEntity> findAll() {
+    public ResponseEntity<List<Object>> findAll() {
         try(Connection conn = sql2o.open()){
-            return conn.createQuery("SELECT * FROM orden")
+            List<OrdenEntity> ordenes = conn.createQuery("SELECT * FROM orden")
                     .executeAndFetch(OrdenEntity.class);
+            List<Object> result = (List) ordenes;
+            if(ordenes.isEmpty()){
+                return ResponseEntity.noContent().build();
+            }
+            return ResponseEntity.ok(result);
         } catch (Exception e){
-            System.out.println(e.getMessage());
-            return null;
+            return ResponseEntity.status(500).body(null);
         }
     }
 
+
     @Override
-    public OrdenEntity findById(int id_orden) {
+    public ResponseEntity<Object> findById(int id_orden) {
         try(Connection conn = sql2o.open()){
-            return conn.createQuery("SELECT * FROM orden WHERE id_orden = :id_orden")
+            OrdenEntity orden = conn.createQuery("SELECT * FROM orden WHERE id_orden = :id_orden")
                     .addParameter("id_orden", id_orden)
                     .executeAndFetchFirst(OrdenEntity.class);
+            if(orden == null){
+                return ResponseEntity.notFound().build();
+            }
+            return ResponseEntity.ok(orden);
         } catch (Exception e){
-            System.out.println(e.getMessage());
-            return null;
+            return ResponseEntity.status(500).body(null);
         }
     }
 
     @Override
-    public List<OrdenEntity> findByCliente(int id_cliente) {
+    public ResponseEntity<List<Object>> findByCliente(int id_cliente) {
         try(Connection conn = sql2o.open()){
-            return conn.createQuery("SELECT * FROM orden WHERE id_cliente = :id_cliente")
+            List<OrdenEntity> ordenes = conn.createQuery("SELECT * FROM orden WHERE id_cliente = :id_cliente")
                     .addParameter("id_cliente", id_cliente)
                     .executeAndFetch(OrdenEntity.class);
+            List<Object> result = (List) ordenes;
+            if(ordenes.isEmpty()){
+                return ResponseEntity.noContent().build();
+            }
+            return ResponseEntity.ok(result);
         } catch (Exception e){
-            System.out.println(e.getMessage());
-            return null;
+            return ResponseEntity.status(500).body(null);
         }
     }
 
     @Override
-    public OrdenEntity create(OrdenEntity orden) {
+    public ResponseEntity<Object> create(OrdenEntity orden) {
         try(Connection conn = sql2o.open()){
             conn.createQuery("INSERT INTO orden (fecha, total, id_cliente) VALUES (:fecha, :total, :id_cliente)", true)
                     .addParameter("fecha", orden.getFecha_orden())
                     .addParameter("total", orden.getTotal())
                     .addParameter("id_cliente", orden.getId_cliente())
                     .executeUpdate();
-            return orden;
+            return ResponseEntity.ok(orden);
         } catch (Exception e){
-            System.out.println(e.getMessage());
-            return null;
+            return ResponseEntity.status(500).body(e.getMessage());
         }
     }
 
     @Override
-    public OrdenEntity update(OrdenEntity orden) {
+    public ResponseEntity<Object> update(OrdenEntity orden) {
         try(Connection conn = sql2o.open()){
             conn.createQuery("UPDATE orden SET fecha = :fecha, total = :total, id_cliente = :id_cliente WHERE id_orden = :id_orden")
                     .addParameter("fecha", orden.getFecha_orden())
@@ -73,23 +85,21 @@ public class OrdenRepositoryImp implements OrdenRepository {
                     .addParameter("id_cliente", orden.getId_cliente())
                     .addParameter("id_orden", orden.getId_orden())
                     .executeUpdate();
-            return orden;
+            return ResponseEntity.ok(orden);
         } catch (Exception e){
-            System.out.println(e.getMessage());
-            return null;
+            return ResponseEntity.status(500).body(e.getMessage());
         }
     }
 
     @Override
-    public boolean delete(int id_orden) {
+    public ResponseEntity<Object> delete(int id_orden) {
         try(Connection conn = sql2o.open()){
             conn.createQuery("DELETE FROM orden WHERE id_orden = :id_orden")
                     .addParameter("id_orden", id_orden)
                     .executeUpdate();
-            return true;
+            return ResponseEntity.ok().build();
         } catch (Exception e){
-            System.out.println(e.getMessage());
-            return false;
+            return ResponseEntity.status(500).body(e.getMessage());
         }
     }
 

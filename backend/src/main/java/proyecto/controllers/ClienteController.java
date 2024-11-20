@@ -1,13 +1,11 @@
 package proyecto.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import proyecto.entities.ClienteEntity;
 import proyecto.service.ClienteService;
+
+import java.util.List;
 
 
 @RestController
@@ -15,49 +13,49 @@ import proyecto.service.ClienteService;
 @RequestMapping("/api/cliente")
 public class ClienteController {
 
-    @Autowired
-    ClienteService clienteService;
+    private final ClienteService clienteService;
+
+    public ClienteController(ClienteService clienteService) {
+        this.clienteService = clienteService;
+    }
 
     @GetMapping("")
-    public ResponseEntity<?> findAll(){
-        return ResponseEntity.ok().body(clienteService.findAll());
+    public ResponseEntity<List<Object>> findAll(){
+        return clienteService.findAll();
     }
 
     @GetMapping("/{id_cliente}")
-    public ResponseEntity<?> findById(int id_cliente) {
-        return ResponseEntity.ok().body(clienteService.findById(id_cliente));
+    public ResponseEntity<Object> findById(@PathVariable int id_cliente) {
+        return clienteService.findById(id_cliente);
     }
 
     @GetMapping("/email/{email}")
-    public ResponseEntity<?> findByEmail(String email) {
-        return ResponseEntity.ok().body(clienteService.findByEmail(email));
+    public ResponseEntity<Object> findByEmail(@PathVariable String email) {
+        return clienteService.findByEmail(email);
     }
 
     @GetMapping("/login")
-    public ResponseEntity<?> login(ClienteEntity cliente) {
-        return ResponseEntity.ok().body(clienteService.login(cliente));
+    public ResponseEntity<Object> loginUser(@RequestBody ClienteEntity user) {
+        return clienteService.loginUser(user.getNombre(), user.getContrasena());
     }
 
-    @GetMapping("/register")
-    public ResponseEntity<?> register(ClienteEntity cliente) {
-        return ResponseEntity.ok().body(clienteService.register(cliente));
+    @PostMapping("/register")
+    public ResponseEntity<Object> createUser(@RequestBody ClienteEntity user) {
+        return clienteService.createUser(user);
     }
+
 
     @GetMapping("/update")
-    public ResponseEntity<?> update(ClienteEntity cliente) {
-        return ResponseEntity.ok().body(clienteService.update(cliente));
+    public ResponseEntity<?> update(@RequestBody ClienteEntity cliente) {
+        return clienteService.update(cliente);
     }
 
-    @GetMapping("/delete")
+    @GetMapping("/delete/{id_cliente}")
 
-    public ResponseEntity<?> delete(int id_cliente) {
-        return ResponseEntity.ok().body(clienteService.delete(id_cliente));
+    public ResponseEntity<?> delete(@PathVariable int id_cliente) {
+        return clienteService.delete(id_cliente);
     }
 
-    @GetMapping("/getCliente")
-    public ResponseEntity<?> getCliente(String token) {
-        return ResponseEntity.ok().body(clienteService.getCliente(token));
-    }
 
 
 

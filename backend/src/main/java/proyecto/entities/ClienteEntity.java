@@ -28,6 +28,9 @@ public class ClienteEntity {
         this.telefono = telefono;
     }
 
+    public ClienteEntity() {
+    }
+
     public int getId_cliente() {
         return id_cliente;
     }

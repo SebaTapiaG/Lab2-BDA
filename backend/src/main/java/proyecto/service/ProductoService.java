@@ -1,6 +1,7 @@
 package proyecto.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import proyecto.entities.ProductoEntity;
 import proyecto.repositories.CategoriaRepository;
@@ -14,36 +15,32 @@ public class ProductoService {
     @Autowired
     ProductoRepository productoRepository;
 
-    @Autowired
-    CategoriaRepository categoriaRepository;
-
-    public List<ProductoEntity> findAll(){
+    public ResponseEntity<List<Object>> findAll() {
         return productoRepository.findAll();
     }
-
-    public ProductoEntity findById(int id_producto){
+    public ResponseEntity<Object> findById(int id_producto) {
         return productoRepository.findById(id_producto);
     }
 
-    public ProductoEntity create(ProductoEntity producto){
-        return productoRepository.create(producto);
+    public ResponseEntity<Object> findByNombre(String nombre) {
+        return productoRepository.findByNombre(nombre);
     }
 
-    public ProductoEntity update(ProductoEntity producto){
-        return productoRepository.update(producto);
-    }
-
-    public boolean delete(int id_producto){
-        return productoRepository.delete(id_producto);
-    }
-
-    public List<ProductoEntity> findByCategoria(int id_categoria){
+    public ResponseEntity <List<Object>> findByCategoria(int id_categoria) {
         return productoRepository.findByCategoria(id_categoria);
     }
 
+    public ResponseEntity<Object> create(ProductoEntity producto) {
+        return productoRepository.create(producto);
+    }
+    public ResponseEntity<Object>  update(ProductoEntity producto) {
+        return productoRepository.update(producto);
+    }
 
-
-
+    public ResponseEntity<Object> delete(int id_producto) {
+        return productoRepository.delete(id_producto);
+    }
 
 }
+
 

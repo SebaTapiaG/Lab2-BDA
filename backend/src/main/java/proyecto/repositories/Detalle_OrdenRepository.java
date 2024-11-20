@@ -1,16 +1,18 @@
 package proyecto.repositories;
 
+import org.springframework.http.ResponseEntity;
 import proyecto.entities.Detalle_OrdenEntity;
 
 import java.util.List;
 
 public interface Detalle_OrdenRepository {
-    List<Detalle_OrdenEntity> findAll();
-    Detalle_OrdenEntity findById(int id_detalle_orden);
 
-    Detalle_OrdenEntity create(Detalle_OrdenEntity detalle_orden);
+    ResponseEntity <List<Object>> findAll();
+    ResponseEntity<Object> findById(int id_detalle_orden);
 
-    Detalle_OrdenEntity update(Detalle_OrdenEntity detalle_orden);
+    ResponseEntity<Object> create(Detalle_OrdenEntity detalle_orden);
 
-    boolean delete(int id_detalle_orden);
+    ResponseEntity<Object> update(Detalle_OrdenEntity detalle_orden);
+
+    ResponseEntity<Object> delete(int id_detalle_orden);
 }
