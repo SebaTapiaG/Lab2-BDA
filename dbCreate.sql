@@ -46,3 +46,12 @@ CREATE TABLE Detalle_Orden (
     CONSTRAINT fk_detalle_orden FOREIGN KEY (id_orden) REFERENCES Orden (id_orden) ON DELETE CASCADE,
     CONSTRAINT fk_detalle_producto FOREIGN KEY (id_producto) REFERENCES Producto (id_producto) ON DELETE CASCADE
 );
+
+-- Tabla Query_Log
+CREATE TABLE Query_Log (
+    id_query_log SERIAL PRIMARY KEY,   -- Identificador único de la query_log
+    name VARCHAR(255) NOT NULL,
+    actual_timestamp TIMESTAMP NOT NULL,
+    query_type CHAR(50) NOT NULL,
+	query_statement TEXT NOT NULL
+);

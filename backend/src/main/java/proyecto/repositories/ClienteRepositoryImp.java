@@ -157,12 +157,12 @@ public class ClienteRepositoryImp implements ClienteRepository{
     }
 
     @Override
-    public ResponseEntity<Object> loginUser(String name, String password) {
-        if (!InputVerificationService.validateInput(name) || !InputVerificationService.validateInput(password)) {
+    public ResponseEntity<Object> loginUser(String email, String password) {
+        if (!InputVerificationService.validateInput(email) || !InputVerificationService.validateInput(password)) {
             return ResponseEntity.badRequest().body("Error al iniciar sesión: caracteres no permitidos.");
         }
         try {
-            ClienteEntity user = (ClienteEntity) findByName(name).getBody();
+            ClienteEntity user = (ClienteEntity) findByEmail(email).getBody();
             if (user == null) {
                 return ResponseEntity.status(401).body("Usuario no encontrado.");
             }

@@ -2,6 +2,7 @@ package proyecto.controllers;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import proyecto.dto.ProductoMasCompradoDTO;
 import proyecto.entities.ProductoEntity;
 import proyecto.service.ProductoService;
 import proyecto.service.CategoriaService;
@@ -26,28 +27,35 @@ public class ProductoController {
         return productoService.findAll();
     }
 
-    @GetMapping("/producto/{id_categoria}")
-    public ResponseEntity<?> findByCategoria(@PathVariable int id_categoria){
+    @GetMapping("/categoria/{id_categoria}")
+    public ResponseEntity<List<ProductoEntity>> findByCategoria(@PathVariable int id_categoria){
         return productoService.findByCategoria(id_categoria);
     }
 
-    @GetMapping("/producto/{id_producto}")
+    @GetMapping("/{id_producto}")
     public ResponseEntity<Object> findById(@PathVariable int id_producto) {
         return productoService.findById(id_producto);
 
     }
 
-    @PostMapping("/producto/create")
+    @PostMapping("/create")
     public ResponseEntity<Object> create(@RequestBody ProductoEntity producto){
         return productoService.create(producto);
     }
 
-    @PutMapping("/producto/update")
+
+    @GetMapping("/top")
+    public ResponseEntity<List<ProductoMasCompradoDTO>> getProductosMasComprados() {
+        return productoService.getProductosMasComprados();
+    }
+     
+
+    @PutMapping("/update")
     public ResponseEntity<Object> update(@RequestBody ProductoEntity producto){
         return productoService.update(producto);
     }
 
-    @DeleteMapping("/producto/delete/{id_producto}")
+    @DeleteMapping("/delete/{id_producto}")
     public ResponseEntity<Object> delete(@PathVariable int id_producto){
         return productoService.delete(id_producto);
     }

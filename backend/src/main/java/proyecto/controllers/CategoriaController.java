@@ -17,27 +17,27 @@ public class CategoriaController {
        this.categoriaService = categoriaService;
     }
 
-    @GetMapping("/categoria")
+    @GetMapping("/")
     public ResponseEntity<List<Object>> findAll(){
         return categoriaService.findAll();
     }
 
-    @GetMapping("/categoria/{id_categoria}")
+    @GetMapping("/{id_categoria}")
     public ResponseEntity<Object> findById(@PathVariable int id_categoria) {
         return categoriaService.findById(id_categoria);
     }
 
-    @GetMapping("/categoria/create")
+    @GetMapping("/create")
     public ResponseEntity<Object> create(@RequestBody CategoriaEntity categoria) {
         return categoriaService.create(categoria);
     }
 
-    @PutMapping("/categoria")
+    @PutMapping("/")
     public ResponseEntity<Object> update(@RequestBody CategoriaEntity categoria) {
         return categoriaService.update(categoria);
     }
 
-    @DeleteMapping("/categoria/{id_categoria}")
+    @DeleteMapping("/{id_categoria}")
     public ResponseEntity<Object> delete(@PathVariable int id_categoria) {
         return categoriaService.delete(id_categoria);
     }

@@ -49,12 +49,13 @@ public class Detalle_OrdenRepositoryImp implements Detalle_OrdenRepository{
     @Override
     public ResponseEntity<Object> create(Detalle_OrdenEntity detalle_orden) {
         try(Connection conn = sql2o.open()){
-            conn.createQuery("INSERT INTO detalle_orden (cantidad, precio, id_producto, id_orden) VALUES (:cantidad, :precio, :id_producto, :id_orden)", true)
+            Integer id = (Integer) conn.createQuery("INSERT INTO detalle_orden (cantidad, precio_unitario, id_producto, id_orden) VALUES (:cantidad, :precio_unitario, :id_producto, :id_orden)", true)
                     .addParameter("cantidad", detalle_orden.getCantidad())
-                    .addParameter("precio", detalle_orden.getPrecio_unitario())
+                    .addParameter("precio_unitario", detalle_orden.getPrecio_unitario())
                     .addParameter("id_producto", detalle_orden.getId_producto())
                     .addParameter("id_orden", detalle_orden.getId_orden())
-                    .executeUpdate();
+                    .executeUpdate().getKey();
+            detalle_orden.setId_detalle(id);
             return ResponseEntity.ok(detalle_orden);
         } catch (Exception e){
             return ResponseEntity.status(500).body(null);

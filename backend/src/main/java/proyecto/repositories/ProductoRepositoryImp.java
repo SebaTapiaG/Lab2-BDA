@@ -2,12 +2,14 @@ package proyecto.repositories;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import proyecto.dto.ProductoMasCompradoDTO;
 import proyecto.entities.ProductoEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
 
+import java.util.Collections;
 import java.util.List;
 
 
@@ -77,21 +79,49 @@ public class ProductoRepositoryImp implements ProductoRepository {
     }
 
     @Override
-  //Retorna la lista de productos de una categoria
-   public ResponseEntity<List<Object>> findByCategoria(int id_categoria) {
+    public ResponseEntity<List<ProductoEntity>> findByCategoria(int id_categoria) {
         try (Connection conn = sql2o.open()) {
             List<ProductoEntity> productos = conn.createQuery("SELECT * FROM producto WHERE id_categoria = :id_categoria")
                     .addParameter("id_categoria", id_categoria)
                     .executeAndFetch(ProductoEntity.class);
-            List<Object> result = (List) productos;
+
             if (productos.isEmpty()) {
                 return ResponseEntity.noContent().build();
             }
-            return ResponseEntity.ok(result);
+            return ResponseEntity.ok(productos);
         } catch (Exception e) {
             return ResponseEntity.status(500).body(null);
         }
     }
+
+
+
+    @Override
+    public ResponseEntity<List<ProductoMasCompradoDTO>> productosMasCompradosPorClientes() {
+        String sql = "SELECT p.id_producto, p.nombre, SUM(d.cantidad) AS total_comprado " +
+                "FROM Cliente c " +
+                "JOIN Orden o ON c.id_cliente = o.id_cliente " +
+                "JOIN Detalle_Orden d ON o.id_orden = d.id_orden " +
+                "JOIN Producto p ON d.id_producto = p.id_producto " +
+                "WHERE o.fecha_orden >= CURRENT_DATE - INTERVAL '6 months' " +
+                "AND o.total > 1000 " +
+                "GROUP BY p.id_producto, p.nombre " +
+                "ORDER BY total_comprado DESC";
+
+        try (Connection conn = sql2o.open()) {
+            List<ProductoMasCompradoDTO> result = conn.createQuery(sql)
+                    .executeAndFetch(ProductoMasCompradoDTO.class);
+
+            if (result.isEmpty()) {
+                return ResponseEntity.noContent().build();
+            }
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body(null);
+        }
+    }
+
 
     @Override
     public ResponseEntity<Object> create(ProductoEntity producto) {

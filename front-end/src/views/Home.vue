@@ -1,79 +1,79 @@
 <template>
-  <div class="home">
-    <header class="hero">
-      <h1>Bienvenido a nuestra tienda</h1>
-      <p>Encuentra los mejores productos al mejor precio</p>
-    </header>
-
-    <section class="featured-products">
-      <h2>Productos Destacados</h2>
-      <div class="product-grid">
-        <ProductCard
-            v-for="product in featuredProducts"
-            :key="product.id"
-            :id="product.id"
-            :name="product.name"
-            :price="product.price"
-            :imgId="product.imgId"
-        />
-      </div>
-    </section>
-
-    <section class="categories">
-      <h2>Categorías</h2>
-      <div class="category-grid">
-        <CategoryCard
-            v-for="category in categories"
-            :key="category.id"
-            :name="category.name"
-            :imgId="category.imgId"
-        />
-      </div>
-    </section>
+  <div class="home-container">
+    <h1>Bienvenido a la tienda</h1>
+    <p>
+      E-commerce
+    </p>
+    <div class="features">
+    </div>
+    <footer>
+      <p>© 2024 Hola. Todos los derechos reservados.</p>
+    </footer>
   </div>
 </template>
 
-<script setup>
-import { ref, onMounted } from 'vue';
-import ProductCard from '@/components/ProductCard.vue';
-import CategoryCard from '@/components/CategoryCard.vue';
-
-const featuredProducts = ref([]);
-const categories = ref([]);
-
-async function fetchFeaturedProducts() {
-  // Aquí realizarías la llamada a tu API para obtener productos destacados
-  featuredProducts.value = await fetch('/api/featured-products').then(res => res.json());
-}
-
-async function fetchCategories() {
-  // Aquí realizarías la llamada a tu API para obtener categorías
-  categories.value = await fetch('/api/categories').then(res => res.json());
-}
-
-onMounted(() => {
-  fetchFeaturedProducts();
-  fetchCategories();
-});
+<script>
+export default {
+  name: "HomeView",
+};
 </script>
 
 <style scoped>
-.home {
+.home-container {
+  max-width: 800px;
+  margin: 0 auto;
   padding: 20px;
-}
-
-.hero {
   text-align: center;
-  margin-bottom: 40px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
-
-.featured-products, .categories {
-  margin-bottom: 40px;
+h1 {
+  color: #333;
+  font-size: 2.5rem;
+  margin-bottom: 10px;
 }
-
-.product-grid, .category-grid {
-  display: grid;
-  gap: 20px;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+p {
+  font-size: 1.2rem;
+  color: #555;
+}
+.features {
+  margin-top: 20px;
+  text-align: left;
+}
+.features h2 {
+  color: #007bff;
+  font-size: 1.5rem;
+}
+.features ul {
+  list-style: none;
+  padding: 0;
+}
+.features li {
+  margin-bottom: 10px;
+  font-size: 1.1rem;
+  color: #333;
+}
+.actions {
+  margin-top: 30px;
+}
+.action-button {
+  display: inline-block;
+  margin: 10px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+.action-button:hover {
+  background-color: #0056b3;
+}
+footer {
+  margin-top: 30px;
+  font-size: 0.9rem;
+  color: #777;
 }
 </style>

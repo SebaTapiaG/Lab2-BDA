@@ -53,7 +53,7 @@ public class ClienteService {
     }
 
     // Realiza el login de un cliente
-    public ResponseEntity<Object> loginUser(String name, String password) {
-        return clienteRepository.loginUser(name, password);
+    public ResponseEntity<Object> loginUser(String email, String password) {
+        return clienteRepository.loginUser(email, password);
     }
 }
