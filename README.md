@@ -1,4 +1,4 @@
-# Lab1-BDA
+# Lab2-BDA
 Laboratorio 1 evaluado del ramo Bases de Datos Avanzadas.
 
 Proyecto desarrollado por el grupo 6 compuesto por: Sebastián, Benjamín Zuñiga, Vicente Arce, Mohamed Al-Marzuk y César Rodríguez
