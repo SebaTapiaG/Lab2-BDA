@@ -19,13 +19,19 @@ public class ClienteEntity {
     private String email;
     private String telefono;
 
-    public ClienteEntity(int id_cliente, String nombre, String contrasena,String direccion, String email, String telefono) {
+    //Agregamos latitud y longitud
+    private double latitud;
+    private double longitud;
+
+    public ClienteEntity(int id_cliente, String nombre, String contrasena,String direccion, String email, String telefono, double latitud, double longitud) {
         this.id_cliente = id_cliente;
         this.nombre = nombre;
         this.contrasena = contrasena;
         this.direccion = direccion;
         this.email = email;
         this.telefono = telefono;
+        this.latitud = latitud;
+        this.longitud = longitud;
     }
 
     public ClienteEntity() {
@@ -77,6 +83,22 @@ public class ClienteEntity {
 
     public void setContrasena(String contrasena) {
         this.contrasena = contrasena;
+    }
+
+    public double getLatitud() {
+        return latitud;
+    }
+
+    public void setLatitud(double latitud) {
+        this.latitud = latitud;
+    }
+
+    public double getLongitud() {
+        return longitud;
+    }
+
+    public void setLongitud(double longitud) {
+        this.longitud = longitud;
     }
 
 
