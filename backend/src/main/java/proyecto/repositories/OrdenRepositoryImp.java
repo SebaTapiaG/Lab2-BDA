@@ -72,11 +72,13 @@ public class OrdenRepositoryImp implements OrdenRepository {
 
         if (orden.getEstado().equals("pagada")) {
             try(Connection conn = sql2o.open()){
-                Integer ordenId = (Integer) conn.createQuery("INSERT INTO orden (fecha_orden, total, estado ,id_cliente) VALUES (:fecha_orden, :total,:estado, :id_cliente)", true)
+                Integer ordenId = (Integer) conn.createQuery("INSERT INTO orden (fecha_orden, total, estado ,id_client,ubicacion) VALUES (:fecha_orden, :total,:estado, :id_cliente,ST_SetSRID(ST_MakePoint(:longitud, :latitud), 4326))", true)
                         .addParameter("fecha_orden", timestamp)
                         .addParameter("total", orden.getTotal())
                         .addParameter("estado", orden.getEstado())
                         .addParameter("id_cliente", orden.getId_cliente())
+                        .addParameter("latitud", orden.getLatitud())
+                        .addParameter("longitud", orden.getLongitud())
                         .executeUpdate().getKey();
                 orden.setId_orden(ordenId);
                 orden.setFecha_orden(timestamp);
@@ -112,11 +114,13 @@ public class OrdenRepositoryImp implements OrdenRepository {
             }
         }else {
             try(Connection conn = sql2o.open()){
-                Integer ordenId = (Integer) conn.createQuery("INSERT INTO orden (fecha_orden, total, estado ,id_cliente) VALUES (:fecha_orden, :total,:estado, :id_cliente)", true)
+                Integer ordenId = (Integer) conn.createQuery("INSERT INTO orden (fecha_orden, total, estado ,id_cliente,ubicacion) VALUES (:fecha_orden, :total,:estado, :id_cliente,:ST_SetSRID(ST_MakePoint(:longitud, :latitud), 4326))", true)
                         .addParameter("fecha_orden", timestamp)
                         .addParameter("total", orden.getTotal())
                         .addParameter("estado", orden.getEstado())
                         .addParameter("id_cliente", orden.getId_cliente())
+                        .addParameter("latitud", orden.getLatitud())
+                        .addParameter("longitud", orden.getLongitud())
                         .executeUpdate().getKey();
                 orden.setId_orden(ordenId);
                 orden.setFecha_orden(timestamp);
@@ -135,12 +139,14 @@ public class OrdenRepositoryImp implements OrdenRepository {
         // Verifica el estado correctamente usando .equals()
         if (orden.getEstado().equals("pagada")) {
             try(Connection conn = sql2o.open()) {
-                conn.createQuery("UPDATE orden SET fecha_orden = :fecha_orden, estado = :estado, total = :total, id_cliente = :id_cliente WHERE id_orden = :id_orden")
+                conn.createQuery("UPDATE orden SET fecha_orden = :fecha_orden, estado = :estado, total = :total, id_cliente = :id_cliente,ubicacion = ST_SetSRID(ST_MakePoint(:longitud, :latitud), 4326) WHERE id_orden = :id_orden")
                         .addParameter("fecha_orden", orden.getFecha_orden())
                         .addParameter("total", orden.getTotal())
                         .addParameter("estado", orden.getEstado())
                         .addParameter("id_cliente", orden.getId_cliente())
                         .addParameter("id_orden", orden.getId_orden())
+                        .addParameter("latitud", orden.getLatitud())
+                        .addParameter("longitud", orden.getLongitud())
                         .executeUpdate();
 
                 // Recupera los productos y cantidades
@@ -208,12 +214,14 @@ public class OrdenRepositoryImp implements OrdenRepository {
             }
         } else {
             try(Connection conn = sql2o.open()){
-                conn.createQuery("UPDATE orden SET fecha_orden = :fecha_orden, estado = :estado, total = :total, id_cliente = :id_cliente WHERE id_orden = :id_orden")
+                conn.createQuery("UPDATE orden SET fecha_orden = :fecha_orden, estado = :estado, total = :total, id_cliente = :id_cliente, ubicacion = ST_SetSRID(ST_MakePoint(:longitud, :latitud), 4326) WHERE id_orden = :id_orden")
                         .addParameter("fecha_orden", orden.getFecha_orden())
                         .addParameter("total", orden.getTotal())
                         .addParameter("estado", orden.getEstado())
                         .addParameter("id_cliente", orden.getId_cliente())
                         .addParameter("id_orden", orden.getId_orden())
+                        .addParameter("latitud", orden.getLatitud())
+                        .addParameter("longitud", orden.getLongitud())
                         .executeUpdate();
                 return ResponseEntity.ok(orden);
             } catch (Exception e) {

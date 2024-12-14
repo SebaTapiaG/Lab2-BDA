@@ -106,12 +106,14 @@ public class ClienteRepositoryImp implements ClienteRepository{
                 return ResponseEntity.status(409).body("Ya existe un usuario con el mismo nombre o email.");
             }
 
-            Integer userId = (Integer) connection.createQuery("INSERT INTO cliente (nombre, email, contrasena, direccion, telefono) VALUES (:nombre, :email, :contrasena, :direccion, :telefono)", true)
+            Integer userId = (Integer) connection.createQuery("INSERT INTO cliente (nombre, email, contrasena, direccion, telefono,ubicacion) VALUES (:nombre, :email, :contrasena, :direccion, :telefono, ST_SetSRID(ST_MakePoint(:longitud, :latitud), 4326))", true)
                     .addParameter("nombre", user.getNombre())
                     .addParameter("email", user.getEmail())
                     .addParameter("contrasena", user.getContrasena())
                     .addParameter("direccion", user.getDireccion())
                     .addParameter("telefono", user.getTelefono())
+                    .addParameter("latitud", user.getLatitud())
+                    .addParameter("longitud", user.getLongitud())
                     .executeUpdate().getKey();
 
             user.setId_cliente(userId);
@@ -125,12 +127,14 @@ public class ClienteRepositoryImp implements ClienteRepository{
     @Override
     public ResponseEntity<Object> update(ClienteEntity cliente) {
         try (Connection conn = sql2o.open()) {
-            int rowsAffected = conn.createQuery("UPDATE cliente SET nombre = :nombre, telefono = :telefono, email = :email, direccion = :direccion WHERE id_cliente = :id_cliente")
+            int rowsAffected = conn.createQuery("UPDATE cliente SET nombre = :nombre, telefono = :telefono, email = :email, direccion = :direccion, ubicacion = ST_SetSRID(ST_MakePoint(:longitud, :latitud), 4326) WHERE id_cliente = :id_cliente")
                     .addParameter("nombre", cliente.getNombre())
                     .addParameter("telefono", cliente.getTelefono())
                     .addParameter("email", cliente.getEmail())
                     .addParameter("direccion", cliente.getDireccion())
                     .addParameter("id_cliente", cliente.getId_cliente())
+                    .addParameter("latitud", cliente.getLatitud())
+                    .addParameter("longitud", cliente.getLongitud())
                     .executeUpdate().getResult();
             if (rowsAffected == 0) {
                 return ResponseEntity.status(404).body(null);
