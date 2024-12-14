@@ -27,4 +27,7 @@ public interface ClienteRepository {
 
     // Realiza el login de un cliente
     public ResponseEntity<Object> loginUser(String email, String password);
+
+    //Punto medio geografio entre dos clientes
+    public ResponseEntity<Object> puntoMedio(int id_cliente1, int id_cliente2);
 }

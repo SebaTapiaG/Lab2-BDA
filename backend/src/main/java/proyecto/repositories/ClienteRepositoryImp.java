@@ -203,4 +203,35 @@ public class ClienteRepositoryImp implements ClienteRepository{
             return ResponseEntity.status(500).body(e.getMessage());
         }
     }
+
+    @Override
+    public ResponseEntity<Object> puntoMedio(int id_cliente1, int id_cliente2) {
+        try (Connection conn = sql2o.open()) {
+            // Consulta SQL para calcular el punto medio entre dos clientes
+            String sql = "SELECT ST_AsText(" +
+                    "    ST_SetSRID(" +
+                    "        ST_MakePoint(" +
+                    "            AVG(ST_X(ubicacion::geometry)), " + // Promedio de longitudes
+                    "            AVG(ST_Y(ubicacion::geometry)) " + // Promedio de latitudes
+                    "        ), 4326" + // Establecer el SRID de las coordenadas
+                    "    ) AS punto_medio " +
+                    "FROM Cliente " +
+                    "WHERE id_cliente IN (:id_cliente1, :id_cliente2)";  // Filtra por los dos clientes especificados
+
+            // Ejecuta la consulta y obtiene el resultado
+            String puntoMedio = conn.createQuery(sql)
+                    .addParameter("id_cliente1", id_cliente1)
+                    .addParameter("id_cliente2", id_cliente2)
+                    .executeScalar(String.class);  // Devuelve el punto medio en formato WKT (Well-Known Text)
+
+            if (puntoMedio == null) {
+                return ResponseEntity.status(404).body("No se encontraron los clientes o las ubicaciones.");
+            }
+
+            return ResponseEntity.ok(puntoMedio); // Retorna el punto medio calculado
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error al calcular el punto medio: " + e.getMessage());
+        }
+    }
+
 }
