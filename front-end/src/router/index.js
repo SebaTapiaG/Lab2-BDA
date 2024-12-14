@@ -6,6 +6,7 @@ import LoginView from '../views/LoginView.vue';
 import AllProductsView from '../views/AllProductsView.vue';
 import CartView from '../views/CartView.vue';
 import OrdersView from '../views/OrdersView.vue';
+import RegisterRepartidorView from '../views/RegisterDeliveryView.vue';
 
 const routes = [
     {
@@ -43,6 +44,11 @@ const routes = [
 			name: 'Orders',
 			component: OrdersView,
 		},
+		{
+			path: '/register/repartidor',
+			name: 'RegisterRepartidor',
+			component: RegisterRepartidorView,
+		}
 ];
 
 const router = createRouter({
