@@ -32,7 +32,7 @@ import { useRouter } from 'vue-router';
 import { reactive } from 'vue';
 import { jwtDecode } from 'jwt-decode';
 import { auth } from '@/services/authService';
-import {clientService} from '@/services/clientService';
+import clientService from '@/services/client.service';
 
 
 

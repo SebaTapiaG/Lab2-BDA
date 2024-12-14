@@ -21,7 +21,7 @@
 import { ref, onMounted } from "vue";
 import { Button, InputNumber, Card } from "primevue";
 import { jwtDecode } from "jwt-decode";
-import {ordenService} from '@/services/ordenService';
+import ordenService from '../services/orden.service';
 
 const orders = ref([]);
 

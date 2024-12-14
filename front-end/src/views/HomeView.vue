@@ -22,7 +22,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import {productoService} from '@/services/productoService';
+import productoService from '../services/producto.service';
 
 // Definir una propiedad reactiva para los productos
 const products = ref([]);
