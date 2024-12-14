@@ -1,6 +1,6 @@
 package proyecto.entities;
 
-public class Almacen_Producto {
+public class Almacen_ProductoEntity {
     /* Atributos
         id_almacen_producto SERIAL (PK) Identificador único del almacén_producto
         id_almacen INT (FK) Identificador único del almacén
@@ -11,7 +11,7 @@ public class Almacen_Producto {
     private int id_almacen;
     private int id_producto;
 
-    public Almacen_Producto(int id_almacen_producto, int id_almacen, int id_producto) {
+    public Almacen_ProductoEntity(int id_almacen_producto, int id_almacen, int id_producto) {
         this.id_almacen_producto = id_almacen_producto;
         this.id_almacen = id_almacen;
         this.id_producto = id_producto;
