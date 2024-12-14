@@ -30,8 +30,8 @@ public class ZonaController {
         return zonaService.findById(id_zona);
     }
 
-    @GetMapping("/{estado}")
-    public ResponseEntity<List<Object>> findByCategoria(@PathVariable String estado){
+    @GetMapping("/estado/{estado}")
+    public ResponseEntity<List<Object>> findByEstado(@PathVariable String estado){
         return zonaService.findByEstado(estado);
     }
 
