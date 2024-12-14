@@ -59,6 +59,14 @@ CREATE TABLE Detalle_Orden (
     CONSTRAINT fk_detalle_producto FOREIGN KEY (id_producto) REFERENCES Producto (id_producto) ON DELETE CASCADE
 );
 
+-- Tabla Zonas
+CREATE TABLE Zonas (
+    id_zona SERIAL PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+		estado VARCHAR(100) NOT NULL,
+    area GEOGRAPHY(POLYGON, 4326) -- Columna de tipo POLYGON
+);
+
 -- Tabla Query_Log
 CREATE TABLE Query_Log (
     id_query_log SERIAL PRIMARY KEY,  -- Identificador único del query_log

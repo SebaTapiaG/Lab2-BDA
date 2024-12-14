@@ -16,6 +16,7 @@ public class ClienteEntity {
 
     private String contrasena;
     private String direccion;
+    private String comuna;
     private String email;
     private String telefono;
 
@@ -23,11 +24,14 @@ public class ClienteEntity {
     private double latitud;
     private double longitud;
 
-    public ClienteEntity(int id_cliente, String nombre, String contrasena,String direccion, String email, String telefono, double latitud, double longitud) {
+    public ClienteEntity(int id_cliente, String nombre, String contrasena,
+                         String direccion, String comuna, String email,
+                         String telefono, double latitud, double longitud) {
         this.id_cliente = id_cliente;
         this.nombre = nombre;
         this.contrasena = contrasena;
         this.direccion = direccion;
+        this.comuna = comuna;
         this.email = email;
         this.telefono = telefono;
         this.latitud = latitud;
@@ -59,6 +63,14 @@ public class ClienteEntity {
 
     public void setDireccion(String direccion) {
         this.direccion = direccion;
+    }
+
+    public String getComuna() {
+        return this.comuna;
+    }
+
+    public void setComuna(String comuna) {
+        this.comuna = comuna;
     }
 
     public String getEmail() {
@@ -101,5 +113,18 @@ public class ClienteEntity {
         this.longitud = longitud;
     }
 
-
+    @Override
+    public String toString() {
+        return "ClienteEntity{" +
+                "id_cliente=" + id_cliente +
+                ", nombre='" + nombre + '\'' +
+                ", contrasena='" + contrasena + '\'' +
+                ", direccion='" + direccion + '\'' +
+                ", comuna='" + comuna + '\'' +
+                ", email='" + email + '\'' +
+                ", telefono='" + telefono + '\'' +
+                ", latitud=" + latitud +
+                ", longitud=" + longitud +
+                '}';
+    }
 }

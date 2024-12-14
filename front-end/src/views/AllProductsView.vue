@@ -38,7 +38,7 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { Button, InputNumber, Card } from "primevue";
-import {productoService} from '@/services/productoService';
+import productoService from '../services/producto.service';
 
 // Categorías disponibles
 const categories = ref([
