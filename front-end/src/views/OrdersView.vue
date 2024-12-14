@@ -21,14 +21,14 @@
 import { ref, onMounted } from "vue";
 import { Button, InputNumber, Card } from "primevue";
 import { jwtDecode } from "jwt-decode";
-import axios from 'axios';
+import {ordenService} from '@/services/ordenService';
 
 const orders = ref([]);
 
 onMounted(async () => {
   try {
 		const id = sessionStorage.getItem('userId')
-    const response = await axios.get(`http://localhost:8080/api/orden/findByCliente/${id}`)
+    const response = await ordenService.getOrdersByClient(id);
 		orders.value = response.data
   } catch (error) {
     console.error('Error fetching products:', error);
@@ -48,7 +48,7 @@ async function pagarOrden(index){
 
 	try{
 		console.log(newOrder)
-		const response = await axios.put('http://localhost:8080/api/orden/update', newOrder)
+		const response = await ordenService.updateOrder(newOrder);
 		if(response.data.estado === "fallida"){
 			window.alert("No se puede realizar esta compra, por lo tanto se eliminara la orden")
 			window.location.reload()

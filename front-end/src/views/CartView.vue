@@ -23,7 +23,8 @@
 import { ref, onMounted } from "vue";
 import { Button, InputNumber, Card } from "primevue";
 import { jwtDecode } from "jwt-decode";
-import axios from 'axios';
+import {ordenService} from '@/services/ordenService';
+import {detalleOrdenService} from '@/services/detalleOrdenService';
 
 const products = ref([]);
 const precio = ref([]);
@@ -69,7 +70,7 @@ async function guardarOrden() {
 
 		try {
 			// Crear la orden
-			const response = await axios.post('http://localhost:8080/api/orden/create', orden);
+			const response = await ordenService.create(orden);
 
 			const misProductos = sessionStorage.getItem('carrito');
 			const productos = misProductos ? JSON.parse(misProductos) : [];
@@ -83,7 +84,7 @@ async function guardarOrden() {
 
 				try {
 					// Crear cada detalle de la orden
-					const response2 = await axios.post('http://localhost:8080/api/detalle_orden/create', detalle);
+					const response2 = await detalleOrdenService.create(detalle);
 				} catch (error) {
 					// Capturar errores del trigger por falta de stock
 					console.error("Error al crear detalle de la orden:", error.response.data.message || error.message);
@@ -128,7 +129,7 @@ async function comprarOrden() {
 
 		try {
 			// Crear la orden
-			const response = await axios.post('http://localhost:8080/api/orden/create', orden);
+			const response = await ordenService.create(orden);
 
 			const misProductos = sessionStorage.getItem('carrito');
 			const productos = misProductos ? JSON.parse(misProductos) : [];
@@ -142,7 +143,7 @@ async function comprarOrden() {
 
 				try {
 					// Crear cada detalle de la orden
-					const response2 = await axios.post('http://localhost:8080/api/detalle_orden/create', detalle);
+					const response2 = await detalleOrdenService.create(detalle);
 				} catch (error) {
 					// Capturar errores del trigger por falta de stock
 					console.error("Error al crear detalle de la orden:", error.response.data.message || error.message);
@@ -150,7 +151,7 @@ async function comprarOrden() {
 					return; // Salir para evitar guardar la orden en caso de error
 				}
 			}
-			const update = await axios.put('http://localhost:8080/api/orden/update', response.data)
+			const update = await ordenService.updateOrder(response.data);
 
 			// Limpiar el carrito y recargar la página
 			sessionStorage.setItem('carrito', []);
