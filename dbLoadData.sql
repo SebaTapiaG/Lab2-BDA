@@ -32,3 +32,9 @@ INSERT INTO Detalle_Orden (id_orden, id_producto, cantidad, precio_unitario) VAL
 (1, 2, 2, 19.99),  -- 2 camisetas para la orden 1
 (2, 4, 1, 29.99),  -- Pelota de fútbol para la orden 2
 (3, 3, 1, 499.99); -- Sofá para la orden 3
+
+-- Insertar una zona con un polígono de ejemplo
+INSERT INTO zonas (nombre, estado, area) VALUES 
+('Zona 1', 'Restringida', ST_GeogFromText('SRID=4326;POLYGON((-70.65 -33.45, -70.66 -33.45, -70.66 -33.46, -70.65 -33.46, -70.65 -33.45))')),
+('Zona 2', 'Disponible', ST_GeogFromText('SRID=4326;POLYGON((-20.65 -50.45, -70.66 -33.45, -70.66 -33.46, -70.65 -33.46, -70.65 -33.45))'));
+
