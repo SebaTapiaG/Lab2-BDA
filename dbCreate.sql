@@ -1,3 +1,12 @@
+DROP TABLE IF EXISTS Query_Log CASCADE;
+DROP TABLE IF EXISTS Detalle_Orden CASCADE;
+DROP TABLE IF EXISTS Producto CASCADE;
+DROP TABLE IF EXISTS Orden CASCADE;
+DROP TABLE IF EXISTS Cliente CASCADE;
+DROP TABLE IF EXISTS Categoria CASCADE;
+
+CREATE EXTENSION IF NOT EXISTS postgis;
+
 -- Tabla Categoria
 CREATE TABLE Categoria (
     id_categoria SERIAL PRIMARY KEY, -- Identificador único de la categoría
