@@ -22,6 +22,12 @@
 	</div>
 	<div class="input">
 		<FloatLabel variant="in">
+			<InputText id="direccion" v-model="state.comuna" variant="filled" size="large" />
+			<label for="in_label">Comuna</label>
+		</FloatLabel>
+	</div>
+	<div class="input">
+		<FloatLabel variant="in">
 			<InputText id="phone" v-model="state.telefono" variant="filled" size="large" />
 			<label for="in_label">Número telefonico</label>
 		</FloatLabel>
@@ -48,12 +54,10 @@
 		</p>
 	</div>
 
-
 </template>
 
 <script>
 import { FloatLabel, InputText, Button, Password } from 'primevue';
-
 
 export default {
 	name: "RegisterView",
@@ -85,11 +89,12 @@ const state = reactive({
 	recontrasena: undefined,
 	telefono: undefined,
 	direccion: undefined,
+	comuna: undefined,
 });
 
 async function register() {
 	const result = schema.safeParse(state);
-	if (!result.success) {
+	if (result.success) {
 		console.log(result.data);
 		return
 	}
@@ -98,7 +103,8 @@ async function register() {
 		email: state.email,
 		contrasena: state.contrasena,
 		telefono: state.telefono,
-		direccion: state.direccion
+		direccion: state.direccion,
+		comuna: state.comuna
 	};
 
 	try {
