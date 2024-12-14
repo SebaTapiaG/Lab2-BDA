@@ -19,10 +19,10 @@ CREATE TABLE Cliente (
     nombre VARCHAR(255) NOT NULL,     -- Nombre completo del cliente
     contrasena VARCHAR(255) NOT NULL, -- Contraseña del cliente
     direccion VARCHAR(255),           -- Dirección del cliente
+    comuna VARCHAR(255),
     email VARCHAR(100) UNIQUE,        -- Correo electrónico del cliente (único)
     telefono VARCHAR(20),             -- Teléfono de contacto
-    latitud GEOGRAPHY(POINT, 4326),  -- Ubicación geográfica del cliente (latitud y longitud)
-		longitud GEOGRAPHY(POINT, 4326)  -- Ubicación geográfica del cliente (latitud y longitud)
+    ubicacion GEOGRAPHY(POINT, 4326)  -- Ubicación geográfica asociada a la orden (latitud y longitud)
 );
 
 -- Tabla Orden

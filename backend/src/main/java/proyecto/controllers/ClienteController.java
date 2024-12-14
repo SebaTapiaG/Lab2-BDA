@@ -44,7 +44,6 @@ public class ClienteController {
         return clienteService.createUser(user);
     }
 
-
     @PutMapping("/update")
     public ResponseEntity<?> update(@RequestBody ClienteEntity cliente) {
         return clienteService.update(cliente);

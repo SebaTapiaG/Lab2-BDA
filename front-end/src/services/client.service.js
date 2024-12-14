@@ -20,6 +20,10 @@ const register = userObj => {
     return httpClient.post("/api/cliente/register", userObj);
 }
 
+const puntoMedio = () =>{
+  return httpClient.get(`/api/cliente/${id}`);
+}
+
 export default {
     getAll,
     get,

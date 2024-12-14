@@ -16,7 +16,7 @@ const update = data => {
     return httpCommon.put("/api/orden/update", data);
 }
 
-findByCliente = idCliente => {
+const findByCliente = idCliente => {
     return httpCommon.get(`/api/orden/findByCliente/${idCliente}`);
 }
 

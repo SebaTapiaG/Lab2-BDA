@@ -23,8 +23,8 @@
 import { ref, onMounted } from "vue";
 import { Button, InputNumber, Card } from "primevue";
 import { jwtDecode } from "jwt-decode";
-import {ordenService} from '@/services/ordenService';
-import {detalleOrdenService} from '@/services/detalleOrdenService';
+import ordenService from '../services/orden.service';
+import detalleOrdenService from '../services/detalleOrden.service';
 
 const products = ref([]);
 const precio = ref([]);
@@ -43,9 +43,6 @@ onMounted(async () => {
 	} catch (error) {
 		console.error('Error fetching products:', error);
 	}
-
-
-
 });
 
 async function guardarOrden() {
