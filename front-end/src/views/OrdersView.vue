@@ -1,19 +1,19 @@
 <template>
 	<div v-for="(order, index) in orders" class="card" :key="order.id_orden">
 		<Card>
-        <template #title>N° de orden: {{order.id_orden}}</template>
-        <template #content>
-						<p>Fecha: {{ order.fecha_orden }}</p>
-						<p>Estado: {{ order.estado }}</p>
-						<p>Costo total: {{ order.total }}$</p>
-						<Button @click="">Ver detalles</Button>
-						<br>
-						<br>
-						<span v-if="order.estado === 'pendiente'">
-							<Button @click="pagarOrden(index)">Pagar</Button>
-						</span>	
-        </template>
-    </Card>
+			<template #title>N° de orden: {{ order.id_orden }}</template>
+			<template #content>
+				<p>Fecha: {{ order.fecha_orden }}</p>
+				<p>Estado: {{ order.estado }}</p>
+				<p>Costo total: {{ order.total }}$</p>
+				<Button @click="">Ver detalles</Button>
+				<br>
+				<br>
+				<span v-if="order.estado === 'pendiente'">
+					<Button @click="pagarOrden(index)">Pagar</Button>
+				</span>
+			</template>
+		</Card>
 	</div>
 </template>
 
@@ -26,35 +26,35 @@ import ordenService from '../services/orden.service';
 const orders = ref([]);
 
 onMounted(async () => {
-  try {
+	try {
 		const id = sessionStorage.getItem('userId')
-    const response = await ordenService.getOrdersByClient(id);
+		const response = await ordenService.findByCliente(id);
 		orders.value = response.data
-  } catch (error) {
-    console.error('Error fetching products:', error);
-  }
+	} catch (error) {
+		console.error('Error fetching products:', error);
+	}
 });
 
-async function pagarOrden(index){
+async function pagarOrden(index) {
 	const order = orders.value[index]
 	console.log(order)
 	const newOrder = {
-										id_orden: order.id_orden,
-										fecha_orden: order.fecha_orden,
-										estado: "pagada",
-										id_cliente: order.id_cliente,
-										total: order.total
-										}
+		id_orden: order.id_orden,
+		fecha_orden: order.fecha_orden,
+		estado: "pagada",
+		id_cliente: order.id_cliente,
+		total: order.total
+	}
 
-	try{
+	try {
 		console.log(newOrder)
 		const response = await ordenService.updateOrder(newOrder);
-		if(response.data.estado === "fallida"){
+		if (response.data.estado === "fallida") {
 			window.alert("No se puede realizar esta compra, por lo tanto se eliminara la orden")
 			window.location.reload()
 		}
-		
-	}catch(error){
+
+	} catch (error) {
 		console.log(error)
 	}
 
