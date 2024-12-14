@@ -12,7 +12,8 @@ CREATE TABLE Cliente (
     direccion VARCHAR(255),           -- Dirección del cliente
     email VARCHAR(100) UNIQUE,        -- Correo electrónico del cliente (único)
     telefono VARCHAR(20),             -- Teléfono de contacto
-    ubicacion GEOGRAPHY(POINT, 4326)  -- Ubicación geográfica del cliente (latitud y longitud)
+    latitud GEOGRAPHY(POINT, 4326),  -- Ubicación geográfica del cliente (latitud y longitud)
+		longitud GEOGRAPHY(POINT, 4326)  -- Ubicación geográfica del cliente (latitud y longitud)
 );
 
 -- Tabla Orden

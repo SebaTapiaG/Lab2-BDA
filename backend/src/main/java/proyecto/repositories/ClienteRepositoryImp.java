@@ -5,6 +5,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import proyecto.entities.ClienteEntity;
 import proyecto.utils.InputVerificationService;
 import proyecto.utils.JwtMiddlewareService;
@@ -30,7 +33,9 @@ public class ClienteRepositoryImp implements ClienteRepository{
     @Override
     public ResponseEntity<List<Object>> findAll() {
         try (Connection conn = sql2o.open()) {
-            List<ClienteEntity> clientes = conn.createQuery("SELECT * FROM cliente")
+            List<ClienteEntity> clientes = conn.createQuery("SELECT id_cliente, nombre, contrasena, direccion, email, telefono, " +
+                            "ST_Y(ubicacion::geometry) AS latitud, ST_X(ubicacion::geometry) AS longitud " +
+                            "FROM Cliente")
                     .executeAndFetch(ClienteEntity.class);
             List<Object> result = (List) clientes;
             if (clientes.isEmpty()) {
@@ -45,7 +50,9 @@ public class ClienteRepositoryImp implements ClienteRepository{
     @Override
     public ResponseEntity<Object> findById(int id_cliente) {
         try (Connection conn = sql2o.open()) {
-            ClienteEntity cliente = conn.createQuery("SELECT * FROM cliente WHERE id_cliente = :id_cliente")
+            ClienteEntity cliente = conn.createQuery("SELECT id_cliente, nombre, contrasena, direccion, email, telefono, " +
+                    "ST_Y(ubicacion::geometry) AS latitud, ST_X(ubicacion::geometry) AS longitud " +
+                    "FROM Cliente WHERE id_cliente = :id_cliente")
                     .addParameter("id_cliente", id_cliente)
                     .executeAndFetchFirst(ClienteEntity.class);
             if (cliente == null) {
@@ -60,7 +67,9 @@ public class ClienteRepositoryImp implements ClienteRepository{
     @Override
     public ResponseEntity<Object> findByEmail(String email) {
         try (Connection conn = sql2o.open()) {
-            ClienteEntity cliente = conn.createQuery("SELECT * FROM cliente WHERE email = :email")
+            ClienteEntity cliente = conn.createQuery("SELECT id_cliente, nombre, contrasena, direccion, email, telefono, " +
+                    "ST_Y(ubicacion::geometry) AS latitud, ST_X(ubicacion::geometry) AS longitud " +
+                    "FROM Cliente WHERE email = :email")
                     .addParameter("email", email)
                     .executeAndFetchFirst(ClienteEntity.class);
             if (cliente == null) {
@@ -75,7 +84,9 @@ public class ClienteRepositoryImp implements ClienteRepository{
     @Override
     public ResponseEntity<Object> findByName(String name) {
         try (Connection conn = sql2o.open()) {
-            ClienteEntity cliente = conn.createQuery("SELECT * FROM cliente WHERE nombre = :nombre")
+            ClienteEntity cliente = conn.createQuery("SELECT id_cliente, nombre, contrasena, direccion, email, telefono, " +
+                    "ST_Y(ubicacion::geometry) AS latitud, ST_X(ubicacion::geometry) AS longitud " +
+                    "FROM Cliente cliente WHERE nombre = :nombre")
                     .addParameter("nombre", name)
                     .executeAndFetchFirst(ClienteEntity.class);
             if (cliente == null) {
@@ -106,13 +117,20 @@ public class ClienteRepositoryImp implements ClienteRepository{
                 return ResponseEntity.status(409).body("Ya existe un usuario con el mismo nombre o email.");
             }
 
-            Integer userId = (Integer) connection.createQuery("INSERT INTO cliente (nombre, email, contrasena, direccion, telefono) VALUES (:nombre, :email, :contrasena, :direccion, :telefono)", true)
+            Integer userId = (Integer) connection.createQuery(
+                            "INSERT INTO cliente (nombre, email, contrasena, direccion, telefono, ubicacion) " +
+                                    "VALUES (:nombre, :email, :contrasena, :direccion, :telefono, ST_SetSRID(ST_MakePoint(:longitud, :latitud), 4326)::geography)",
+                            true)
                     .addParameter("nombre", user.getNombre())
                     .addParameter("email", user.getEmail())
                     .addParameter("contrasena", user.getContrasena())
                     .addParameter("direccion", user.getDireccion())
                     .addParameter("telefono", user.getTelefono())
-                    .executeUpdate().getKey();
+                    .addParameter("latitud", user.getLatitud()) // Agregar la latitud
+                    .addParameter("longitud", user.getLongitud()) // Agregar la longitud
+                    .executeUpdate()
+                    .getKey();
+
 
             user.setId_cliente(userId);
             String token = jwtMiddlewareService.generateToken(user);
@@ -125,19 +143,32 @@ public class ClienteRepositoryImp implements ClienteRepository{
     @Override
     public ResponseEntity<Object> update(ClienteEntity cliente) {
         try (Connection conn = sql2o.open()) {
-            int rowsAffected = conn.createQuery("UPDATE cliente SET nombre = :nombre, telefono = :telefono, email = :email, direccion = :direccion WHERE id_cliente = :id_cliente")
+            int rowsAffected = conn.createQuery(
+                            "UPDATE cliente " +
+                                    "SET nombre = :nombre, " +
+                                    "telefono = :telefono, " +
+                                    "email = :email, " +
+                                    "direccion = :direccion, " +
+                                    "ubicacion = ST_SetSRID(ST_MakePoint(:longitud, :latitud), 4326)::geography " +
+                                    "WHERE id_cliente = :id_cliente"
+                    )
                     .addParameter("nombre", cliente.getNombre())
                     .addParameter("telefono", cliente.getTelefono())
                     .addParameter("email", cliente.getEmail())
                     .addParameter("direccion", cliente.getDireccion())
+                    .addParameter("latitud", cliente.getLatitud()) // Nuevo parámetro de latitud
+                    .addParameter("longitud", cliente.getLongitud()) // Nuevo parámetro de longitud
                     .addParameter("id_cliente", cliente.getId_cliente())
                     .executeUpdate().getResult();
+
             if (rowsAffected == 0) {
-                return ResponseEntity.status(404).body(null);
+                return ResponseEntity.status(404).body(null); // 404 Not Found
             }
-            return ResponseEntity.ok(cliente);
+
+            return ResponseEntity.ok(cliente); // 200 OK con el cliente actualizado
         } catch (Exception e) {
-            return ResponseEntity.status(500).body(null);
+            e.printStackTrace();
+            return ResponseEntity.status(500).body(null); // 500 Internal Server Error
         }
     }
 
