@@ -1,10 +1,7 @@
 package proyecto.controllers;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import proyecto.entities.AlmacenEntity;
 import proyecto.service.AlmacenService;
 
@@ -31,17 +28,17 @@ public class AlmacenController {
         return almacenService.findById(id_almacen);
     }
 
-    @GetMapping("/create")
+    @PostMapping("/create")
     public ResponseEntity<Object> create(AlmacenEntity almacen){
         return almacenService.create(almacen);
     }
 
-    @GetMapping("/update")
+    @PutMapping("/update")
     public ResponseEntity<Object> update(AlmacenEntity almacen){
         return almacenService.update(almacen);
     }
 
-    @GetMapping("/delete")
+    @DeleteMapping("/delete")
     public ResponseEntity<Object> delete(int id_almacen){
         return almacenService.delete(id_almacen);
     }
