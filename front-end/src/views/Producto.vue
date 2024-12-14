@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import {productosService} from '@/services/productosService';
 
 export default {
   data() {
@@ -50,14 +50,13 @@ export default {
         precio: "",
         id_categoria: "",
       }, // Producto en edición/creación
-      apiUrl: "http://localhost:8080/api/producto", // URL del backend
     };
   },
   methods: {
     // Obtener todos los productos
     async cargarProductos() {
       try {
-        const response = await axios.get(this.apiUrl);
+        const response = await productosService.getAll();
         this.productos = response.data;
       } catch (error) {
         console.error("Error al cargar los productos:", error);
@@ -68,11 +67,11 @@ export default {
       try {
         if (this.productoSeleccionado.id_producto) {
           // Actualizar producto
-          await axios.put(`${this.apiUrl}/producto/update`, this.productoSeleccionado);
+          await productosService.update(this.productoSeleccionado);
           alert("Producto actualizado correctamente.");
         } else {
           // Crear producto
-          await axios.post(`${this.apiUrl}/producto/create`, this.productoSeleccionado);
+          await productosService.create(this.productoSeleccionado);
           alert("Producto creado correctamente.");
         }
         this.cargarProductos();
@@ -84,7 +83,7 @@ export default {
     // Eliminar producto
     async eliminarProducto(id_producto) {
       try {
-        await axios.delete(`${this.apiUrl}/producto/delete/${id_producto}`);
+        await productosService.delete(id_producto);
         alert("Producto eliminado correctamente.");
         this.cargarProductos();
       } catch (error) {

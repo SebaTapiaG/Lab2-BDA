@@ -64,7 +64,7 @@ export default {
 <script setup>
 import { z } from 'zod';
 import { reactive } from 'vue';
-import axios from 'axios';
+import {clientService} from '@/services/clientService';
 import { useRouter } from 'vue-router';
 
 const router = useRouter()
@@ -103,7 +103,7 @@ async function register(){
             };
 
 		try {
-        const response = await axios.post('http://localhost:8080/api/cliente/register', userObj)
+		const response = await clientService.register(userObj);
         console.log(response.data)
 				console.log("Usuario creado", userObj)
 				router.push("/")

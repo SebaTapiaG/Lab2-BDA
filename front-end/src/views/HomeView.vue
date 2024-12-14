@@ -22,7 +22,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import axios from 'axios';
+import {productoService} from '@/services/productoService';
 
 // Definir una propiedad reactiva para los productos
 const products = ref([]);
@@ -30,7 +30,7 @@ const products = ref([]);
 // Hacer la solicitud HTTP cuando el componente se monta
 onMounted(async () => {
   try {
-    const response = await axios.get('http://localhost:8080/api/producto/top');
+    const response = productoService.topProductos();
     if (response.status === 200) {
       products.value = response.data;
     }

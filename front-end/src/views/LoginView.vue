@@ -29,10 +29,10 @@
 import { ref } from 'vue';
 import { FloatLabel, Password, InputText, Button } from 'primevue';
 import { useRouter } from 'vue-router';
-import axios from 'axios';
 import { reactive } from 'vue';
 import { jwtDecode } from 'jwt-decode';
 import { auth } from '@/services/authService';
+import {clientService} from '@/services/clientService';
 
 
 
@@ -55,7 +55,7 @@ async function login(){
             };
 						
 		try {
-        const response = await axios.post('http://localhost:8080/api/cliente/login', userObj);
+		const response = await clientService.login(userObj)
         const token = response.data;
 				console.log(jwtDecode(token))
 				const userId = jwtDecode(token).user_id

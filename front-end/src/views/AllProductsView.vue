@@ -38,7 +38,7 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { Button, InputNumber, Card } from "primevue";
-import axios from 'axios';
+import {productoService} from '@/services/productoService';
 
 // Categorías disponibles
 const categories = ref([
@@ -57,7 +57,7 @@ const selectedCategory = ref('');
 // Cargar productos cuando el componente se monte
 onMounted(async () => {
   try {
-    const response = await axios.get('http://localhost:8080/api/producto');
+    const response = await productoService.getAllProducts();
     products.value = response.data; // Guardamos los productos iniciales
   } catch (error) {
     console.error('Error fetching products:', error);
@@ -69,13 +69,13 @@ const filtrarPorCategoria = async () => {
   if (selectedCategory.value) {
     try {
       // Llamada a la API para obtener productos filtrados por categoría
-      const response = await axios.get(`http://localhost:8080/api/producto/categoria/${selectedCategory.value}`);
+      const response = await productoService.getProductsByCategory(selectedCategory.value);
       products.value = response.data; // Actualizar los productos con los filtrados
     } catch (error) {
       console.error('Error fetching filtered products:', error);
     }
   } else {
-    const response = await axios.get('http://localhost:8080/api/producto');
+    const response = await productoService.getAllProducts();
     products.value = response.data;
   }
 };
