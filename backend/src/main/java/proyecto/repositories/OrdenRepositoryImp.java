@@ -39,7 +39,8 @@ public class OrdenRepositoryImp implements OrdenRepository {
     @Override
     public ResponseEntity<Object> findById(int id_orden) {
         try(Connection conn = sql2o.open()){
-            OrdenEntity orden = conn.createQuery("SELECT * FROM orden WHERE id_orden = :id_orden")
+            OrdenEntity orden = conn.createQuery("SELECT id_orden, fecha_orden, estado, id_cliente, total," +
+                    "ST_Y(ubicacion::geometry) AS latitud, ST_X(ubicacion::geometry) AS longitud " + "FROM orden WHERE id_orden = :id_orden")
                     .addParameter("id_orden", id_orden)
                     .executeAndFetchFirst(OrdenEntity.class);
             if(orden == null){
@@ -54,7 +55,8 @@ public class OrdenRepositoryImp implements OrdenRepository {
     @Override
     public ResponseEntity<List<Object>> findByCliente(int id_cliente) {
         try(Connection conn = sql2o.open()){
-            List<OrdenEntity> ordenes = conn.createQuery("SELECT * FROM orden WHERE id_cliente = :id_cliente")
+            List<OrdenEntity> ordenes = conn.createQuery("SELECT id_orden, fecha_orden, estado, id_cliente, total," +
+                    "ST_Y(ubicacion::geometry) AS latitud, ST_X(ubicacion::geometry) AS longitud " + "FROM orden WHERE id_cliente = :id_cliente")
                     .addParameter("id_cliente", id_cliente)
                     .executeAndFetch(OrdenEntity.class);
             List<Object> result = (List) ordenes;
@@ -73,7 +75,7 @@ public class OrdenRepositoryImp implements OrdenRepository {
 
         if (orden.getEstado().equals("pagada")) {
             try(Connection conn = sql2o.open()){
-                Integer ordenId = (Integer) conn.createQuery("INSERT INTO orden (fecha_orden, total, estado ,id_client,ubicacion) VALUES (:fecha_orden, :total,:estado, :id_cliente,ST_SetSRID(ST_MakePoint(:longitud, :latitud), 4326))", true)
+                Integer ordenId = (Integer) conn.createQuery("INSERT INTO orden (fecha_orden, total, estado ,id_cliente,ubicacion) VALUES (:fecha_orden, :total,:estado, :id_cliente,ST_SetSRID(ST_MakePoint(:longitud, :latitud), 4326))", true)
                         .addParameter("fecha_orden", timestamp)
                         .addParameter("total", orden.getTotal())
                         .addParameter("estado", orden.getEstado())
@@ -115,7 +117,7 @@ public class OrdenRepositoryImp implements OrdenRepository {
             }
         }else {
             try(Connection conn = sql2o.open()){
-                Integer ordenId = (Integer) conn.createQuery("INSERT INTO orden (fecha_orden, total, estado ,id_cliente,ubicacion) VALUES (:fecha_orden, :total,:estado, :id_cliente,:ST_SetSRID(ST_MakePoint(:longitud, :latitud), 4326))", true)
+                Integer ordenId = (Integer) conn.createQuery("INSERT INTO orden (fecha_orden, total, estado ,id_cliente,ubicacion) VALUES (:fecha_orden, :total,:estado, :id_cliente,ST_SetSRID(ST_MakePoint(:longitud, :latitud), 4326))", true)
                         .addParameter("fecha_orden", timestamp)
                         .addParameter("total", orden.getTotal())
                         .addParameter("estado", orden.getEstado())
