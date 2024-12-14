@@ -59,6 +59,7 @@ public class ZonaRepositoryImp implements ZonaRepository {
     public ResponseEntity<List<Object>> findByEstado(String estado) {
         try (Connection conn = sql2o.open()) {
             List<ZonaEntity> zonas = conn.createQuery("SELECT id_zona, nombre, estado, ST_AsText(area) AS area FROM zonas WHERE estado = :estado")
+                    .addParameter("estado", estado)
                     .executeAndFetch(ZonaEntity.class);
             List<Object> result = (List) zonas;
             if (zonas.isEmpty()) {
