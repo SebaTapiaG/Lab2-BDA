@@ -3,18 +3,24 @@
     <h1>Ordenes disponibles</h1>
     
     <!-- Listado de Ordenes -->
-    <div v-if="ordenes.length">
-      <h2>Lista de Ordenes</h2>
-      <ul>
-        <li v-for="orden in ordenes" :key="orden.id_orden">
-          {{ orden.id_orden }} - {{ orden.fecha }} - {{ orden.id_cliente }} - {{ orden.id_producto }} - {{ orden.cantidad }}
-          <button @click="seleccionarOrden(orden)">Seleccionar</button>
-        </li>
-      </ul>
+    <div v-if="ordenes.length" class="map-container">
+      <label for="orden">Ordenes por repartir:</label>
+			<br>
+			<select v-model="ordenSeleccionada" id="orden">
+				<option disabled value="">Selecciona una orden</option>
+				<option v-for="(orden, index) in ordenes" :key="index" :value="orden">
+					{{ orden.id_orden }} <!-- Muestra correctamente el id de la orden -->
+				</option>
+			</select>
+		<br>
+		<button @click="seleccionarOrden(ordenSeleccionada)">Seleccionar</button>
     </div>
     <div v-else>
       <p>No hay ordenes disponibles.</p>
     </div>
+		<br>
+
+		<div class="map-container"><div id="map" style="height: 500px;"></div></div>
 
     <!-- Confirmar Entrega -->
     <div v-if="ordenSeleccionada" class="confirmacion-container">
@@ -33,14 +39,15 @@ export default {
   data() {
     return {
       ordenes: [], // Lista de órdenes cargadas desde el backend
-      ordenSeleccionada: null, // Orden seleccionada por el repartidor
+      ordenSeleccionada: null, // Orden seleccionada por el repartidor		
+			map: null,
     };
   },
   methods: {
     // Obtener todas las órdenes
     async cargarOrdenes() {
       try {
-        const response = await ordenesService.getAll();
+        const response = await ordenesService.getPagadas();
         this.ordenes = response.data;
       } catch (error) {
         console.error("Error al cargar las órdenes:", error);
@@ -48,7 +55,9 @@ export default {
     },
     // Seleccionar una orden
     seleccionarOrden(orden) {
-      this.ordenSeleccionada = { ...orden }; // Clonar la orden seleccionada
+			console.log(orden)
+			this.ordenSeleccionada = orden;
+			this.mostrarPunto(this.ordenSeleccionada.latitud, this.ordenSeleccionada.longitud)
     },
     // Marcar una orden como completada
     async marcarComoCompletada() {
@@ -68,11 +77,31 @@ export default {
     cancelarSeleccion() {
       this.ordenSeleccionada = null; // Limpia la orden seleccionada
     },
+		 mostrarPunto(latitud, longitud) {
+
+		// 4️⃣ Crear el marcador (punto) en la ubicación especificada
+		const marker = L.marker([latitud, longitud]).addTo(this.map);
+
+		// 5️⃣ Agregar un popup al marcador (opcional)
+		marker.bindPopup(`<b>Punto mostrado</b><br>Latitud: ${latitud}, Longitud: ${longitud}`).openPopup();
+
+		// 6️⃣ Centrar el mapa en el punto
+		this.map.setView([latitud, longitud], 16);
+}
   },
   created() {
     // Cargar las órdenes al iniciar
     this.cargarOrdenes();
   },
+	mounted() {
+      // Inicializar mapa
+      this.map = L.map('map').setView([0, 0], 2);
+  
+      // Añadir capa base de OpenStreetMap
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      }).addTo(this.map);
+    },
 };
 </script>
 

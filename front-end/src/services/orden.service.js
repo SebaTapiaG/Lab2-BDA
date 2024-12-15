@@ -4,6 +4,10 @@ const getAll = () => {
   return httpCommon.get("/api/orden");
 }
 
+const getPagadas = () => {
+  return httpCommon.get("/api/orden/pagadas");
+}
+
 const get = id => {
     return httpCommon.get(`/api/orden/${id}`);
 }
@@ -27,6 +31,7 @@ const updateEstado = (id_orden, estado) => {
 
 export default {
     getAll,
+		getPagadas,
     get,
     create,
     update,

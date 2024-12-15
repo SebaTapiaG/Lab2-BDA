@@ -28,6 +28,11 @@ public class OrdenController {
         return ordenService.findById(id_orden);
     }
 
+    @GetMapping("/pagadas")
+    public ResponseEntity<?> findPagadas() {
+        return ordenService.findPagadas();
+    }
+
     @PostMapping("/create")
     public ResponseEntity<Object> create(@RequestBody OrdenEntity orden) {
        System.out.println(orden);

@@ -15,6 +15,8 @@ public interface OrdenRepository {
 
     ResponseEntity<List<Object>> findByCliente(int id_cliente);
 
+    ResponseEntity<List<Object>> findPagadas();
+
     ResponseEntity create(OrdenEntity orden);
 
     ResponseEntity update(OrdenEntity orden);

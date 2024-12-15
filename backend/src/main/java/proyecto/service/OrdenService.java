@@ -23,6 +23,10 @@ public class OrdenService {
         return ordenRepository.findById(id_orden);
     }
 
+    public ResponseEntity findPagadas() {
+        return ordenRepository.findPagadas();
+    }
+
     public ResponseEntity<List<Object>> findByCliente(int id_cliente) {
         return ordenRepository.findByCliente(id_cliente);
     }

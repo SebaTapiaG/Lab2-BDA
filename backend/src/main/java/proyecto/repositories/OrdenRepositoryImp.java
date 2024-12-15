@@ -72,6 +72,23 @@ public class OrdenRepositoryImp implements OrdenRepository {
     }
 
     @Override
+    public ResponseEntity<List<Object>> findPagadas() {
+        try(Connection conn = sql2o.open()){
+            List<OrdenEntity> ordenes = conn.createQuery("SELECT id_orden, fecha_orden, estado, id_cliente, total," +
+                            "ST_Y(ubicacion::geometry) AS latitud, ST_X(ubicacion::geometry) AS longitud " + "FROM orden WHERE estado = :estado")
+                    .addParameter("estado", "pagada")
+                    .executeAndFetch(OrdenEntity.class);
+            List<Object> result = (List) ordenes;
+            if(ordenes.isEmpty()){
+                return ResponseEntity.noContent().build();
+            }
+            return ResponseEntity.ok(result);
+        } catch (Exception e){
+            return ResponseEntity.status(500).body(null);
+        }
+    }
+
+    @Override
     public ResponseEntity<Object> create(OrdenEntity orden) {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         try(Connection conn = sql2o.open()) {
