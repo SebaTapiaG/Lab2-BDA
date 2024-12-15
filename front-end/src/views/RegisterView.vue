@@ -94,7 +94,7 @@ const state = reactive({
 
 async function register() {
 	const result = schema.safeParse(state);
-	if (!result.success){
+	if (result.success){
 		console.log(result.data);
 		return
 	}

@@ -41,7 +41,6 @@ public class JwtMiddlewareService{
                 .compact();
     }
 
-
     public Boolean validateToken(String token){
         try{
             Jws<Claims> jws = Jwts
