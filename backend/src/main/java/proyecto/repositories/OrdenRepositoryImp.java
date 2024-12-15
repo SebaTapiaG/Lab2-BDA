@@ -92,7 +92,8 @@ public class OrdenRepositoryImp implements OrdenRepository {
     public ResponseEntity<Object> create(OrdenEntity orden) {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         try(Connection conn = sql2o.open()) {
-            Integer ordenId = (Integer) conn.createQuery("INSERT INTO orden (fecha_orden, total, estado ,id_cliente,ubicacion) VALUES (:fecha_orden, :total,:estado, :id_cliente,ST_SetSRID(ST_MakePoint(:longitud, :latitud), 4326))", true)
+            Integer ordenId = (Integer) conn.createQuery("INSERT INTO orden (id_repartidor, fecha_orden, total, estado ,id_cliente,ubicacion) VALUES (id_repartidor, :fecha_orden, :total,:estado, :id_cliente,ST_SetSRID(ST_MakePoint(:longitud, :latitud), 4326))", true)
+                    .addParameter("id_repartidor", orden.getId_repartidor())
                     .addParameter("fecha_orden", timestamp)
                     .addParameter("total", orden.getTotal())
                     .addParameter("estado", orden.getEstado())
@@ -101,7 +102,7 @@ public class OrdenRepositoryImp implements OrdenRepository {
                     .addParameter("longitud", orden.getLongitud())
                     .executeUpdate().getKey();
 
-            orden = conn.createQuery("SELECT id_orden, fecha_orden, estado, id_cliente, total," +
+            orden = conn.createQuery("SELECT id_repartidor, id_orden, fecha_orden, estado, id_cliente, total," +
                             "ST_Y(ubicacion::geometry) AS latitud, ST_X(ubicacion::geometry) AS longitud " + "FROM orden WHERE id_orden = :id_orden")
                     .addParameter("id_orden", ordenId)
                     .executeAndFetchFirst(OrdenEntity.class);
@@ -145,7 +146,8 @@ public class OrdenRepositoryImp implements OrdenRepository {
     public ResponseEntity<Object> update(OrdenEntity orden) {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         try(Connection conn = sql2o.open()) {
-            conn.createQuery("UPDATE orden SET fecha_orden = :fecha_orden, total = :total, estado= :estado, id_cliente = :id_cliente,ubicacion = ST_SetSRID(ST_MakePoint(:longitud, :latitud), 4326) WHERE id_orden = :id_orden")
+            conn.createQuery("UPDATE orden SET id_repartidor = :id_repartidor, fecha_orden = :fecha_orden, total = :total, estado= :estado, id_cliente = :id_cliente,ubicacion = ST_SetSRID(ST_MakePoint(:longitud, :latitud), 4326) WHERE id_orden = :id_orden")
+                    .addParameter("id_repartidor", orden.getId_repartidor())
                     .addParameter("fecha_orden", timestamp)
                     .addParameter("total", orden.getTotal())
                     .addParameter("estado", orden.getEstado())
@@ -155,7 +157,7 @@ public class OrdenRepositoryImp implements OrdenRepository {
                     .addParameter("id_orden", orden.getId_orden())
                     .executeUpdate();
 
-            orden = conn.createQuery("SELECT id_orden, fecha_orden, estado, id_cliente, total," +
+            orden = conn.createQuery("SELECT id_repartidor, id_orden, fecha_orden, estado, id_cliente, total," +
                             "ST_Y(ubicacion::geometry) AS latitud, ST_X(ubicacion::geometry) AS longitud " + "FROM orden WHERE id_orden = :id_orden")
                     .addParameter("id_orden", orden.getId_orden())
                     .executeAndFetchFirst(OrdenEntity.class);

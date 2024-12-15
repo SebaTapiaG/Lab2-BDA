@@ -24,7 +24,8 @@ INSERT INTO Producto (nombre, descripcion, precio, stock, estado, id_categoria) 
 INSERT INTO Repartidor (nombre, contrasena, email, telefono) VALUES
 ('Juan Pérez', 'password123', 'juan.perez@example.com', '987654321'),
 ('María González', 'securePass456', 'maria.gonzalez@example.com', '912345678'),
-('Carlos López', 'mySecret789', 'carlos.lopez@example.com', '923456789');
+('Carlos López', 'mySecret789', 'carlos.lopez@example.com', '923456789'),
+('Moha', 'moame', 'mohamed@example.com', '923456789');
 
 
 -- Poblar Orden con ubicación geográfica

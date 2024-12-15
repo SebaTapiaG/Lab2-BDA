@@ -23,6 +23,8 @@ class AuthService {
     this.state.user = user;
   }
 
+  
+
   logout() {
     sessionStorage.removeItem("userId");
     sessionStorage.removeItem("user");

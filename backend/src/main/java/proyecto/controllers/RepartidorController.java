@@ -30,11 +30,6 @@ public class RepartidorController {
         return repartidorService.findByEmail(email);
     }
 
-    @GetMapping("/almacen/{id}")
-    public ResponseEntity<List<RepartidorEntity>> findByAlmacen(@PathVariable Integer id){
-        return repartidorService.findByAlmacen(id);
-    }
-
     @PutMapping("/update")
     public ResponseEntity<Object> update(@RequestBody RepartidorEntity repartidor){
         return repartidorService.update(repartidor);

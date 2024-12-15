@@ -29,10 +29,6 @@ public class RepartidorService {
         return repartidorRepository.findByEmail(email);
     }
 
-    public ResponseEntity<List<RepartidorEntity>> findByAlmacen(int idAlmacen){
-        return repartidorRepository.findByAlmacen(idAlmacen);
-    }
-
     public ResponseEntity<Object> update(RepartidorEntity repartidor){
         return repartidorRepository.update(repartidor);
     }

@@ -3,6 +3,7 @@ package proyecto.utils;
 import io.jsonwebtoken.*;
 import org.springframework.stereotype.Repository;
 import proyecto.entities.ClienteEntity;
+import proyecto.entities.RepartidorEntity;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
@@ -22,6 +23,18 @@ public class JwtMiddlewareService{
                 .builder()
                 .claim("user_id", clienteEntity.getId_cliente())
                 .claim("name", clienteEntity.getNombre())
+                .issuedAt(new Date(System.currentTimeMillis()))
+                .expiration(expiration_date)
+                .signWith(secretKey)
+                .compact();
+    }
+
+    public String generateTokenRepartidor(RepartidorEntity repartidorEntity){
+        Date expiration_date = new Date(System.currentTimeMillis() + 86400000);
+        return Jwts
+                .builder()
+                .claim("user_id", repartidorEntity.getId_repartidor())
+                .claim("name", repartidorEntity.getNombre())
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(expiration_date)
                 .signWith(secretKey)

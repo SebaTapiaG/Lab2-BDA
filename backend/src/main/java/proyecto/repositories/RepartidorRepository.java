@@ -9,7 +9,6 @@ public interface RepartidorRepository {
     public ResponseEntity<Object> findByEmail(String email);
     public ResponseEntity<Object> findById(int id_repartidor);
     public ResponseEntity<List<Object>> findAll();
-    public ResponseEntity<List<RepartidorEntity>>  findByAlmacen(int idAlmacen);
     public ResponseEntity<Object> update(RepartidorEntity repartidor);
     public ResponseEntity<Object> delete(int idRepartidor);
     public ResponseEntity<Object> register(RepartidorEntity repartidor);

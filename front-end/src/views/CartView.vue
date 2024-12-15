@@ -137,6 +137,7 @@ async function guardarOrden() {
 		console.log(fechaSinMilisegundos);
 
 		const orden = {
+			id_repartidor: 0,
 			fecha_orden: "",
 			estado: "pendiente",
 			id_cliente: idUsuario,
@@ -198,6 +199,7 @@ async function comprarOrden() {
 		console.log(fechaSinMilisegundos);
 
 		const orden = {
+			id_repartidor: 0,
 			fecha_orden: "",
 			estado: "pagada",
 			id_cliente: idUsuario,

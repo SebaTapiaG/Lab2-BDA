@@ -3,6 +3,7 @@ import HomeView from '../views/HomeView.vue';
 import ProductView from '../views/ProductView.vue';
 import RegisterView from '../views/RegisterView.vue';
 import LoginView from '../views/LoginView.vue';
+import LoginRepartidor from '../views/DeliveryLoginView.vue';
 import AllProductsView from '../views/AllProductsView.vue';
 import CartView from '../views/CartView.vue';
 import OrdersView from '../views/OrdersView.vue';
@@ -32,6 +33,11 @@ const routes = [
 			path: '/login',
 			name: 'Login',
 			component: LoginView,
+		},
+		{
+			path: '/loginRepartidor',
+			name: 'LoginRepartidor',
+			component: LoginRepartidor,
 		},
 		{
 			path: '/products',

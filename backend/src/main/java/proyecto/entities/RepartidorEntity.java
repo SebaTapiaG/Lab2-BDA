@@ -17,15 +17,13 @@ public class RepartidorEntity {
     private String contrasena;
     private String email;
     private String telefono;
-    private int id_almacen;
 
-    public RepartidorEntity(int id_repartidor, String nombre, String contrasena, String email, String telefono, int id_almacen) {
+    public RepartidorEntity(int id_repartidor, String nombre, String contrasena, String email, String telefono) {
         this.id_repartidor = id_repartidor;
         this.nombre = nombre;
         this.contrasena = contrasena;
         this.email = email;
         this.telefono = telefono;
-        this.id_almacen = id_almacen;
     }
 
     public RepartidorEntity() {
@@ -69,12 +67,5 @@ public class RepartidorEntity {
 
     public void setContrasena(String contrasena) {
         this.contrasena = contrasena;
-    }
-
-    public int getId_almacen() {
-        return id_almacen;
-    }
-    public void setId_almacen(int id_almacen) {
-        this.id_almacen = id_almacen;
     }
 }

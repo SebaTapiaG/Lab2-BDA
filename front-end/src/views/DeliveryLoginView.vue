@@ -20,15 +20,9 @@
 
 	<!-- Nuevo botón para redirigir a la ruta /loginRepartidor -->
 	<div class="button">
-		<Button @click="goToLoginRepartidor">¿Eres repartidor?</Button>
+		<Button @click="goToLoginRepartidor">¿Eres cliente?</Button>
 	</div>
 
-	<div class="text">
-		<p>
-			¿No tienes cuenta? 
-			<RouterLink to="/register" class="link">Crear cuenta</RouterLink>
-		</p>
-	</div>
 </template>
 
 <script setup>
@@ -38,7 +32,7 @@ import { useRouter } from 'vue-router';
 import { reactive } from 'vue';
 import { jwtDecode } from 'jwt-decode';
 import { auth } from '@/services/authService';
-import clientService from '@/services/client.service';
+import clientService from '@/services/repartidor.service';
 
 const router = useRouter()
 
@@ -71,7 +65,7 @@ async function login(){
 
 // Función para redirigir a la página de login de repartidor
 function goToLoginRepartidor() {
-	router.push('/loginRepartidor');
+	router.push('/login');
 }
 </script>
 

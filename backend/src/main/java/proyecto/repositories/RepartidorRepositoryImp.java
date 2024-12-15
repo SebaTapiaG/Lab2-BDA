@@ -18,10 +18,13 @@ public class RepartidorRepositoryImp implements RepartidorRepository {
     @Autowired
     private Sql2o sql2o;
 
+    @Autowired
+    private JwtMiddlewareService jwtMiddlewareService;
+
     @Override
     public ResponseEntity<Object> findByNombre(String name) {
         try (Connection conn = sql2o.open()) {
-            RepartidorEntity repartidor = conn.createQuery("SELECT id_repartidor, nombre, contrasena, email, telefono, id_almacen" +
+            RepartidorEntity repartidor = conn.createQuery("SELECT id_repartidor, nombre, contrasena, email, telefono" +
                             "FROM Repartidor repartidor WHERE nombre = :nombre")
                     .addParameter("nombre", name)
                     .executeAndFetchFirst(RepartidorEntity.class);
@@ -37,14 +40,13 @@ public class RepartidorRepositoryImp implements RepartidorRepository {
     @Override
     public ResponseEntity<Object> findByEmail(String email) {
         try (Connection conn = sql2o.open()) {
-            RepartidorEntity repartidor = conn.createQuery("SELECT id_repartidor, nombre, contrasena, email, telefono, id_almacen" +
-                            "FROM Repartidor WHERE email = :email")
+            RepartidorEntity cliente = conn.createQuery("SELECT * FROM Repartidor WHERE email = :email")
                     .addParameter("email", email)
                     .executeAndFetchFirst(RepartidorEntity.class);
-            if (repartidor == null) {
+            if (cliente == null) {
                 return ResponseEntity.status(404).body(null);
             }
-            return ResponseEntity.ok(repartidor);
+            return ResponseEntity.ok(cliente);
         } catch (Exception e) {
             return ResponseEntity.status(500).body(null);
         }
@@ -53,8 +55,7 @@ public class RepartidorRepositoryImp implements RepartidorRepository {
     @Override
     public ResponseEntity<Object> findById(int id_repartidor) {
         try (Connection conn = sql2o.open()) {
-            RepartidorEntity repartidor = conn.createQuery("SELECT id_repartidor, nombre, contrasena, email, telefono, id_almacen" +
-                            "FROM Repartidor WHERE id_repartidor = :id_repartidor")
+            RepartidorEntity repartidor = conn.createQuery("SELECT * FROM repartidor WHERE id_repartidor = :id_repartidor")
                     .addParameter("id_repartidor", id_repartidor)
                     .executeAndFetchFirst(RepartidorEntity.class);
             if (repartidor == null) {
@@ -69,36 +70,23 @@ public class RepartidorRepositoryImp implements RepartidorRepository {
     @Override
     public ResponseEntity<List<Object>> findAll() {
         try (Connection conn = sql2o.open()) {
-            List<RepartidorEntity> repartidores = conn.createQuery("SELECT id_repartidor, nombre, contrasena, email, telefono, id_almacen" +
+            // Ejecuta la consulta SQL y obtiene la lista de repartidores
+            List<RepartidorEntity> repartidores = conn.createQuery("SELECT id_repartidor, nombre, contrasena, email, telefono " +
                             "FROM Repartidor")
-                    .executeAndFetch(RepartidorEntity.class);
+                    .executeAndFetch(RepartidorEntity.class); // Asegúrate de agregar el ';' aquí
+
+            // Verifica si la lista de repartidores está vacía
             if (repartidores.isEmpty()) {
                 return ResponseEntity.noContent().build();
             }
-            return ResponseEntity.ok((List) repartidores);
+
+            // Si la lista no está vacía, retorna los repartidores como respuesta
+            return ResponseEntity.ok((List<Object>) (List<?>) repartidores); // Convertir la lista de repartidores a List<Object>
         } catch (Exception e) {
             return ResponseEntity.status(500).body(null);
         }
     }
 
-    @Override
-    public ResponseEntity<List<RepartidorEntity>> findByAlmacen(int idAlmacen) {
-        try (Connection conn = sql2o.open()) {
-            // Cambiar executeAndFetchFirst por executeAndFetch para obtener todos los repartidores
-            List<RepartidorEntity> repartidores = conn.createQuery("SELECT id_repartidor, nombre, contrasena, email, telefono, id_almacen" +
-                            " FROM Repartidor WHERE id_almacen = :idAlmacen")
-                    .addParameter("id_almacen", idAlmacen)
-                    .executeAndFetch(RepartidorEntity.class);
-
-            if (repartidores.isEmpty()) {
-                return ResponseEntity.status(404).body(null); // Si no hay repartidores, devolver 404
-            }
-
-            return ResponseEntity.ok(repartidores); // Devolver lista de repartidores
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body(null); // En caso de error, devolver 500
-        }
-    }
 
     @Override
     public ResponseEntity<Object> update(RepartidorEntity repartidor) {
@@ -108,13 +96,11 @@ public class RepartidorRepositoryImp implements RepartidorRepository {
                                     "SET nombre = :nombre, " +
                                     "telefono = :telefono, " +
                                     "email = :email, " +
-                                    "id_almacen = :id_almacen " +
                                     "WHERE id_repartidor = :id_repartidor"
                     )
                     .addParameter("nombre", repartidor.getNombre())
                     .addParameter("telefono", repartidor.getTelefono())
                     .addParameter("email", repartidor.getEmail())
-                    .addParameter("id_almacen", repartidor.getId_almacen()) // Si se necesita actualizar el almacén
                     .addParameter("id_repartidor", repartidor.getId_repartidor())
                     .executeUpdate().getResult();
 
@@ -168,14 +154,13 @@ public class RepartidorRepositoryImp implements RepartidorRepository {
 
             // Inserción del nuevo repartidor
             Integer repartidorId = (Integer) connection.createQuery(
-                            "INSERT INTO repartidor (nombre, email, contrasena, telefono, id_almacen) " +
-                                    "VALUES (:nombre, :email, :contrasena, :telefono, :id_almacen)",
+                            "INSERT INTO repartidor (nombre, email, contrasena, telefono) " +
+                                    "VALUES (:nombre, :email, :contrasena, :telefono)",
                             true)
                     .addParameter("nombre", repartidor.getNombre())
                     .addParameter("email", repartidor.getEmail())
                     .addParameter("contrasena", repartidor.getContrasena())
                     .addParameter("telefono", repartidor.getTelefono())
-                    .addParameter("id_almacen", repartidor.getId_almacen()) // Asociando el repartidor con un almacén
                     .executeUpdate()
                     .getKey();
 
@@ -194,22 +179,19 @@ public class RepartidorRepositoryImp implements RepartidorRepository {
         if (!InputVerificationService.validateInput(email) || !InputVerificationService.validateInput(password)) {
             return ResponseEntity.badRequest().body("Error al iniciar sesión: caracteres no permitidos.");
         }
-
         try {
-            RepartidorEntity repartidor = (RepartidorEntity) findByEmail(email).getBody();
-
-            if (repartidor == null) {
-                return ResponseEntity.status(401).body("Repartidor no encontrado."); // 401 si no se encuentra el repartidor
+            RepartidorEntity user = (RepartidorEntity) findByEmail(email).getBody();
+            if (user == null) {
+                return ResponseEntity.status(401).body("Usuario no encontrado.");
             }
-
-            if (repartidor.getContrasena().equals(password)) {
-                // Eliminar la parte del token si no es necesario
-                return ResponseEntity.ok(repartidor); // Devuelve el repartidor si la contraseña es correcta
+            if (user.getContrasena().equals(password)) {
+                String token = jwtMiddlewareService.generateTokenRepartidor(user);
+                return ResponseEntity.ok(token);
             } else {
-                return ResponseEntity.status(401).body("Contraseña incorrecta."); // 401 si la contraseña es incorrecta
+                return ResponseEntity.status(401).body("Contraseña incorrecta.");
             }
         } catch (Exception e) {
-            return ResponseEntity.status(500).body(e.getMessage()); // 500 si hay algún error
+            return ResponseEntity.status(500).body(e.getMessage());
         }
     }
 }
