@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import {ordenesService} from '@/services/orden.service';
+import ordenesService from '@/services/orden.service';
 
 export default {
   data() {
