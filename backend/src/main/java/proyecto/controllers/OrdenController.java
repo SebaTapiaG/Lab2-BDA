@@ -29,13 +29,12 @@ public class OrdenController {
     }
 
     @GetMapping("/pagadas")
-    public ResponseEntity<?> findPagadas() {
+    public ResponseEntity<List<Object>> findPagadas(){
         return ordenService.findPagadas();
     }
 
     @PostMapping("/create")
     public ResponseEntity<Object> create(@RequestBody OrdenEntity orden) {
-       System.out.println(orden);
        return ordenService.create(orden);
     }
 

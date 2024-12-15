@@ -101,7 +101,6 @@ export default {
         } else {
           this.client1Marker.setLatLng(client1Coords).setPopupContent(`<b>${client1.nombre}</b>`).openPopup();
         }
-<<<<<<< Updated upstream
 
         if (!this.client2Marker) {
           this.client2Marker = L.marker(client2Coords, { icon: this.client2Icon })
@@ -141,15 +140,28 @@ export default {
         alert('Ocurrió un error al calcular el punto medio.');
       }
     },
+			async cargarZonas() {
+      try {
+        const response = await zonaService.getByEstado("Disponible");
+        this.ordenes = response.data;
+      } catch (error) {
+        console.error("Error al cargar las órdenes:", error);
+      }
+    },
   },
-  mounted() {
-    this.map = L.map('map').setView([0, 0], 2);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-    }).addTo(this.map);
-    this.fetchClientes();
-  },
-};
+    mounted() {
+      // Inicializar mapa
+      this.map = L.map('map').setView([0, 0], 2);
+  
+      // Añadir capa base de OpenStreetMap
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      }).addTo(this.map);
+  
+      // Obtener la lista de clientes al cargar el componente
+      this.fetchClientes();
+    },
+  };
 </script>
 
 <style>
@@ -174,48 +186,3 @@ h2 {
   border: 1px solid #ccc;
 }
 </style>
-=======
-      },
-			async cargarZonas() {
-      try {
-        const response = await zonaService.getByEstado("Disponible");
-        this.ordenes = response.data;
-      } catch (error) {
-        console.error("Error al cargar las órdenes:", error);
-      }
-    },
-  },
-    mounted() {
-      // Inicializar mapa
-      this.map = L.map('map').setView([0, 0], 2);
-  
-      // Añadir capa base de OpenStreetMap
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-      }).addTo(this.map);
-  
-      // Obtener la lista de clientes al cargar el componente
-      this.fetchClientes();
-    },
-  };
-  </script>
-  
-  <style>
-  .map-container {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .inputs {
-    margin-bottom: 1rem;
-  }
-  
-  #map {
-    width: 80%;
-    border: 1px solid #ccc;
-  }
-  </style>
-  
->>>>>>> Stashed changes
