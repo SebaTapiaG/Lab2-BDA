@@ -21,6 +21,7 @@ const itemsLogged = ref([
 	{ label: "Productos", command: () => router.push("/products") },
 	{ label: "Mis órdenes", command: () => router.push("/myOrders") },
 	{ label: "Mi carrito", command: () => router.push("/cart") },
+	{ label: "Mapa", command: () => router.push("/mapa") },
 	{
 		label: "Logout",
 		command: () => logout(),
