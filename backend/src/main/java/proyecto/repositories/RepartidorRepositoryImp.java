@@ -5,12 +5,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
-import proyecto.entities.ClienteEntity;
 import proyecto.entities.RepartidorEntity;
 import proyecto.utils.InputVerificationService;
 import proyecto.utils.JwtMiddlewareService;
 
-import java.util.Collections;
 import java.util.List;
 
 @Repository
