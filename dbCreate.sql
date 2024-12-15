@@ -29,8 +29,9 @@ CREATE TABLE Cliente (
 CREATE TABLE Orden (
     id_orden SERIAL PRIMARY KEY,        -- Identificador único de la orden
     fecha_orden TIMESTAMP NOT NULL DEFAULT NOW(), -- Fecha de la orden (por defecto la actual)
-    estado VARCHAR(50) NOT NULL CHECK (estado IN ('pendiente', 'pagada', 'enviada')), -- Estado de la orden
+    estado VARCHAR(50) NOT NULL CHECK (estado IN ('pendiente', 'pagada', 'enviada', 'zona restringida')), -- Estado de la orden
     id_cliente INTEGER NOT NULL,        -- Clave foránea a Cliente
+		id_repartidor INTEGER,
     total DECIMAL(10, 2) NOT NULL,      -- Total a pagar por la orden
     ubicacion GEOGRAPHY(POINT, 4326),   -- Ubicación geográfica asociada a la orden (latitud y longitud)
     CONSTRAINT fk_orden_cliente FOREIGN KEY (id_cliente) REFERENCES Cliente (id_cliente) ON DELETE CASCADE

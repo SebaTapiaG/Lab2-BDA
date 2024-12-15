@@ -10,7 +10,7 @@ BEGIN
         AND ST_Contains(Zonas.area::geometry, NEW.ubicacion::geometry)
     ) THEN
         -- Si la ubicación está dentro de la zona restringida, cambiar el estado a 'pendiente'
-        NEW.estado := 'pendiente';
+        NEW.estado := 'zona restringida';
     END IF;
 
     -- Retornar la nueva fila para que se inserte o actualice

@@ -21,10 +21,10 @@ INSERT INTO Producto (nombre, descripcion, precio, stock, estado, id_categoria) 
 ('Muñeca', 'Muñeca interactiva con accesorios', 39.99, 25, 'disponible', 4);
 
 -- Poblar Orden con ubicación geográfica
-INSERT INTO Orden (fecha_orden, estado, id_cliente, total, ubicacion) VALUES 
-('2024-11-01 14:30:00', 'pendiente', 1, 749.98, ST_GeogFromText('SRID=4326;POINT(-70.6693 -33.4489)')), -- Ubicación asociada al cliente Juan Pérez
-('2024-11-02 10:15:00', 'pagada', 2, 29.99, ST_GeogFromText('SRID=4326;POINT(-70.6417 -33.4691)')), -- Ubicación asociada al cliente Ana Gómez
-('2024-11-03 18:45:00', 'enviada', 1, 499.99, ST_GeogFromText('SRID=4326;POINT(-70.6693 -33.4489)')); -- Ubicación asociada al cliente Juan Pérez
+INSERT INTO Orden (fecha_orden, estado, id_cliente, id_repartidor, total, ubicacion) VALUES 
+('2024-11-01 14:30:00', 'pendiente', 1, 4, 749.98, ST_GeogFromText('SRID=4326;POINT(-70.6693 -33.4489)')), -- Ubicación asociada al cliente Juan Pérez
+('2024-11-02 10:15:00', 'pagada', 2, 4, 29.99, ST_GeogFromText('SRID=4326;POINT(-70.6417 -33.4691)')), -- Ubicación asociada al cliente Ana Gómez
+('2024-11-03 18:45:00', 'enviada', 1, 4, 499.99, ST_GeogFromText('SRID=4326;POINT(-70.6693 -33.4489)')); -- Ubicación asociada al cliente Juan Pérez
 
 -- Poblar detalle orden
 INSERT INTO Detalle_Orden (id_orden, id_producto, cantidad, precio_unitario) VALUES 
