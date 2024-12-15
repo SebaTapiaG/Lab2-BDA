@@ -54,7 +54,7 @@ export default {
     async marcarComoCompletada() {
       try {
         if (this.ordenSeleccionada.id_orden) {
-          await ordenesService.update(this.ordenSeleccionada.id_orden);
+          await ordenesService.updateEstado(this.ordenSeleccionada.id_orden, "completada");
           alert("Orden marcada como completada.");
           this.cargarOrdenes(); // Actualiza la lista de órdenes
           this.cancelarSeleccion(); // Limpia la selección

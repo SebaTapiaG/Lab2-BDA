@@ -18,5 +18,7 @@ public interface OrdenRepository {
 
     ResponseEntity update(OrdenEntity orden);
 
+    ResponseEntity updateEstado(int id_orden, String estado);
+
     ResponseEntity delete(int id_orden);
 }

@@ -38,4 +38,8 @@ public class OrdenService {
     public ResponseEntity delete(int id_orden) {
         return ordenRepository.delete(id_orden);
     }
+
+    public ResponseEntity updateEstado(int id_orden, String estado) {
+        return ordenRepository.updateEstado(id_orden, estado);
+    }
 }

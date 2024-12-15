@@ -188,5 +188,18 @@ public class OrdenRepositoryImp implements OrdenRepository {
         }
     }
 
+    @Override
+    public ResponseEntity<Object> updateEstado(int id_orden, String estado) {
+        try(Connection conn = sql2o.open()){
+            conn.createQuery("UPDATE orden SET estado = :estado WHERE id_orden = :id_orden")
+                    .addParameter("estado", estado)
+                    .addParameter("id_orden", id_orden)
+                    .executeUpdate();
+            return ResponseEntity.ok().build();
+        } catch (Exception e){
+            return ResponseEntity.status(500).body(e.getMessage());
+        }
+    }
+
 
 }

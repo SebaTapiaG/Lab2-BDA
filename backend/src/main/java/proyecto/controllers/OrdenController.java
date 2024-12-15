@@ -49,4 +49,9 @@ public class OrdenController {
     public ResponseEntity<List<Object>> findByCliente(@PathVariable int id_cliente) {
         return ordenService.findByCliente(id_cliente);
     }
+
+    @PutMapping("/updateEstado/{id_orden}/{estado}")
+    public ResponseEntity<Object> updateEstado(@PathVariable int id_orden, @PathVariable String estado) {
+        return ordenService.updateEstado(id_orden, estado);
+    }
 }
