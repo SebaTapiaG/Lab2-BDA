@@ -126,7 +126,7 @@ public class OrdenRepositoryImp implements OrdenRepository {
     public ResponseEntity<Object> update(OrdenEntity orden) {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         try(Connection conn = sql2o.open()) {
-            conn.createQuery("UPDATE orden SET fecha_orden = :fecha_orden, total = :total, estado= -:estado, id_cliente = :id_cliente,ubicacion = ST_SetSRID(ST_MakePoint(:longitud, :latitud), 4326) WHERE id_orden = :id_orden")
+            conn.createQuery("UPDATE orden SET fecha_orden = :fecha_orden, total = :total, estado= :estado, id_cliente = :id_cliente,ubicacion = ST_SetSRID(ST_MakePoint(:longitud, :latitud), 4326) WHERE id_orden = :id_orden")
                     .addParameter("fecha_orden", timestamp)
                     .addParameter("total", orden.getTotal())
                     .addParameter("estado", orden.getEstado())
