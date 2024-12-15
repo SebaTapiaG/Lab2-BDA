@@ -53,9 +53,9 @@ public class OrdenController {
         return ordenService.findByCliente(id_cliente);
     }
 
-    @PutMapping("/updateEstado/{id_orden}/{estado}")
-    public ResponseEntity<Object> updateEstado(@PathVariable int id_orden, @PathVariable String estado) {
-        return ordenService.updateEstado(id_orden, estado);
+    @PutMapping("/updateEstado/{id_orden}/{id_repartidor}/{estado}")
+    public ResponseEntity<Object> updateEstado(@PathVariable int id_orden, @PathVariable String estado, @PathVariable int id_repartidor) {
+        return ordenService.updateEstado(id_orden, estado, id_repartidor);
     }
 
     @GetMapping("/findDeliveryCompletedInArea/{id_zona}")

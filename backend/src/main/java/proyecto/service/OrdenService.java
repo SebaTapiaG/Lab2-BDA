@@ -43,8 +43,8 @@ public class OrdenService {
         return ordenRepository.delete(id_orden);
     }
 
-    public ResponseEntity updateEstado(int id_orden, String estado) {
-        return ordenRepository.updateEstado(id_orden, estado);
+    public ResponseEntity updateEstado(int id_orden, String estado,int id_repartidor) {
+        return ordenRepository.updateEstado(id_orden, estado, id_repartidor);
     }
     public ResponseEntity<List<RepartidorDTO>> findDeliveryCompletedInArea(int id_zona) {
         return ordenRepository.findDeliveryCompletedInArea(id_zona);

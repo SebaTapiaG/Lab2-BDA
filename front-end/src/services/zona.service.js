@@ -12,8 +12,13 @@ const getByEstado = estado => {
 		return httpCommon.get(`/api/zona/estado/${estado}`);
 }
 
+const findRepartidores = idZona => {
+	return httpCommon.get(`/api/orden/findDeliveryCompletedInArea/${idZona}`);
+}
+
 export default {
 	getAll,
 	getById,
-	getByEstado
+	getByEstado,
+	findRepartidores,
 }

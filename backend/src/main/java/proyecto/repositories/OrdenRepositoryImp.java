@@ -92,7 +92,7 @@ public class OrdenRepositoryImp implements OrdenRepository {
     public ResponseEntity<Object> create(OrdenEntity orden) {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         try(Connection conn = sql2o.open()) {
-            Integer ordenId = (Integer) conn.createQuery("INSERT INTO orden (id_repartidor, fecha_orden, total, estado ,id_cliente,ubicacion) VALUES (id_repartidor, :fecha_orden, :total,:estado, :id_cliente,ST_SetSRID(ST_MakePoint(:longitud, :latitud), 4326))", true)
+            Integer ordenId = (Integer) conn.createQuery("INSERT INTO orden (id_repartidor, fecha_orden, total, estado ,id_cliente,ubicacion) VALUES (:id_repartidor, :fecha_orden, :total,:estado, :id_cliente,ST_SetSRID(ST_MakePoint(:longitud, :latitud), 4326))", true)
                     .addParameter("id_repartidor", orden.getId_repartidor())
                     .addParameter("fecha_orden", timestamp)
                     .addParameter("total", orden.getTotal())
@@ -210,9 +210,10 @@ public class OrdenRepositoryImp implements OrdenRepository {
     }
 
     @Override
-    public ResponseEntity<Object> updateEstado(int id_orden, String estado) {
+    public ResponseEntity<Object> updateEstado(int id_orden, String estado, int id_repartidor) {
         try(Connection conn = sql2o.open()){
-            conn.createQuery("UPDATE orden SET estado = :estado WHERE id_orden = :id_orden")
+            conn.createQuery("UPDATE orden SET estado = :estado, id_repartidor = :id_repartidor WHERE id_orden = :id_orden")
+                    .addParameter("id_repartidor", id_repartidor)
                     .addParameter("estado", estado)
                     .addParameter("id_orden", id_orden)
                     .executeUpdate();

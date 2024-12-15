@@ -64,7 +64,8 @@ export default {
 			console.log(this.ordenSeleccionada)
       try {
         if (this.ordenSeleccionada.id_orden) {
-          await ordenesService.updateEstado(this.ordenSeleccionada.id_orden, "enviada");
+					const id_repartidor = sessionStorage.getItem("userId")
+          await ordenesService.updateEstado(this.ordenSeleccionada.id_orden, "enviada", id_repartidor);
           alert("Orden marcada como enviada.");
           this.cargarOrdenes(); // Actualiza la lista de órdenes
           this.cancelarSeleccion(); // Limpia la selección

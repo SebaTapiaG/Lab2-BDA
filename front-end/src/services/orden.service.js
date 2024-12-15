@@ -24,9 +24,10 @@ const findByCliente = idCliente => {
     return httpCommon.get(`/api/orden/findByCliente/${idCliente}`);
 }
 
-const updateEstado = (id_orden, estado) => {
-    return httpCommon.put(`/api/orden/updateEstado/${id_orden}/${estado}`);
+const updateEstado = (id_orden, estado, id_repartidor) => {
+    return httpCommon.put(`/api/orden/updateEstado/${id_orden}/${id_repartidor}/${estado}`);
   };
+
   
 
 export default {

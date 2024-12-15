@@ -1,6 +1,6 @@
 <template>
 	<div class="title">
-		<h1>Inicio de sesión</h1>
+		<h1>Inicio de sesión repartidor</h1>
 	</div>
 	<div class="input">
 		<FloatLabel variant="in">

@@ -24,9 +24,26 @@
         <button @click="fetchMidpoint">Calcular Punto Medio</button>
       </div>
     </div>
+		<div>
+			<h2>Busca los repartidores por zona:</h2>
+			<label for="client1">Zonas:</label>
+        <select v-model="zonaSeleccionada" id="client1">
+          <option disabled value="">Selecciona una zona</option>
+          <option v-for="(zona, index) in zonas" :key="index" :value="zona">
+            - {{ zona.nombre }}
+          </option>
+        </select>
+				<button @click="mostrarZona(zonaSeleccionada)">Ver zona</button>
+				<button @click="buscarRepartidores">Ver repartidores</button>
+		</div>
+		<br>
 
     <!-- Mapa -->
     <div id="map" style="height: 500px;"></div>
+		<br>
+		<div v-if="repartidores.length" class="map-container">
+			<h2>Repartidores {{ zona.nombre }}</h2>
+		</div>
   </div>
 </template>
 
@@ -35,6 +52,8 @@ import L from 'leaflet';
 import clientService from '../services/client.service';
 import ubicacionIcon from '@/assets/ubicacion.png';
 import ubicacionPuntoMedio from '@/assets/ubicacion_pm.png';
+import zonaService from '@/services/zona.service';
+import { Button } from 'primevue';
 
 export default {
   name: 'MapView',
@@ -44,6 +63,9 @@ export default {
       client1Id: null,
       client2Id: null,
       map: null,
+			zonas: [],
+			repartidores: [],
+			zonaSeleccionada: null,
       midpointMarker: null,
       client1Marker: null,
       client2Marker: null,
@@ -140,14 +162,45 @@ export default {
         alert('Ocurrió un error al calcular el punto medio.');
       }
     },
-			async cargarZonas() {
+		async cargarZonas() {
       try {
         const response = await zonaService.getByEstado("Disponible");
-        this.ordenes = response.data;
+        this.zonas = response.data;
       } catch (error) {
-        console.error("Error al cargar las órdenes:", error);
+        console.error("Error al cargar las zonas:", error);
       }
     },
+		mostrarZona(zona){
+			console.log(zona)
+			function wktToLeafletCoordinates(wkt) {
+			const coordinatesText = wkt.match(/\(\(([^)]+)\)\)/)[1]; // Extraer el texto entre (())
+			const coordinatePairs = coordinatesText.split(','); // Separar las coordenadas
+			const leafletCoordinates = coordinatePairs.map(pair => {
+				const [lng, lat] = pair.trim().split(' ').map(Number);
+				return [lat, lng]; // Leaflet usa [lat, lng]
+			});
+			return leafletCoordinates;
+		}
+			const polygonCoordinates = wktToLeafletCoordinates(zona.area); // Convertir WKT a coordenadas Leaflet
+			const polygon = L.polygon(polygonCoordinates, {
+				color: 'blue',               // Color del borde
+				fillColor: 'lightblue',        // Color de fondo
+				fillOpacity: 0.5            // Opacidad del relleno
+			}).addTo(this.map);
+
+			// 6️⃣ Agregar un popup al hacer clic en el polígono
+			polygon.bindPopup(`<b>${zona.nombre}</b><br>Estado: ${zona.estado}`);
+
+			},
+		async buscarRepartidores(){
+			try{
+				const response = await zonaService.findRepartidores(zonaSelecciona.id)
+				this.repartidores = response.data
+			}catch(error){
+				console.log(error)
+			}
+
+		}
   },
     mounted() {
       // Inicializar mapa
@@ -160,6 +213,7 @@ export default {
   
       // Obtener la lista de clientes al cargar el componente
       this.fetchClientes();
+			this.cargarZonas();
     },
   };
 </script>
