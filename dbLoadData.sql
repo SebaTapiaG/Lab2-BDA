@@ -20,11 +20,18 @@ INSERT INTO Producto (nombre, descripcion, precio, stock, estado, id_categoria) 
 ('Pelota de fútbol', 'Pelota oficial tamaño 5', 29.99, 100, 'disponible', 5),
 ('Muñeca', 'Muñeca interactiva con accesorios', 39.99, 25, 'disponible', 4);
 
+-- Población 1
+INSERT INTO Repartidor (nombre, contrasena, email, telefono) VALUES
+('Juan Pérez', 'password123', 'juan.perez@example.com', '987654321'),
+('María González', 'securePass456', 'maria.gonzalez@example.com', '912345678'),
+('Carlos López', 'mySecret789', 'carlos.lopez@example.com', '923456789');
+
+
 -- Poblar Orden con ubicación geográfica
-INSERT INTO Orden (fecha_orden, estado, id_cliente, total, ubicacion) VALUES 
-('2024-11-01 14:30:00', 'pendiente', 1, 749.98, ST_GeogFromText('SRID=4326;POINT(-70.6693 -33.4489)')), -- Ubicación asociada al cliente Juan Pérez
-('2024-11-02 10:15:00', 'pagada', 2, 29.99, ST_GeogFromText('SRID=4326;POINT(-70.6417 -33.4691)')), -- Ubicación asociada al cliente Ana Gómez
-('2024-11-03 18:45:00', 'enviada', 1, 499.99, ST_GeogFromText('SRID=4326;POINT(-70.6693 -33.4489)')); -- Ubicación asociada al cliente Juan Pérez
+INSERT INTO Orden (fecha_orden, estado, id_cliente, total, ubicacion, id_repartidor) VALUES
+('2024-11-01 14:30:00', 'pendiente', 1, 749.98, ST_GeogFromText('SRID=4326;POINT(-70.6693 -33.4489)'), 1), -- Ubicación asociada al cliente Juan Pérez
+('2024-11-02 10:15:00', 'pagada', 2, 29.99, ST_GeogFromText('SRID=4326;POINT(-70.6417 -33.4691)'), 2), -- Ubicación asociada al cliente Ana Gómez
+('2024-11-03 18:45:00', 'enviada', 1, 499.99, ST_GeogFromText('SRID=4326;POINT(-70.6693 -33.4489)'), 3); -- Ubicación asociada al cliente Juan Pérez
 
 -- Poblar detalle orden
 INSERT INTO Detalle_Orden (id_orden, id_producto, cantidad, precio_unitario) VALUES 
@@ -40,4 +47,3 @@ INSERT INTO zonas (nombre, estado, area) VALUES
 ('Zona 3', 'Restringida', ST_GeogFromText('SRID=4326;POLYGON((-70.66 -33.46, -70.67 -33.46, -70.67 -33.47, -70.66 -33.47, -70.66 -33.46))')),
 ('Zona 4', 'Disponible', ST_GeogFromText('SRID=4326;POLYGON((-70.62 -33.42, -70.63 -33.42, -70.63 -33.43, -70.62 -33.43, -70.62 -33.42))')),
 ('Zona 5', 'Restringida', ST_GeogFromText('SRID=4326;POLYGON((-70.60 -33.40, -70.61 -33.40, -70.61 -33.41, -70.60 -33.41, -70.60 -33.40))'));
-

@@ -25,6 +25,15 @@ CREATE TABLE Cliente (
     ubicacion GEOGRAPHY(POINT, 4326)  -- Ubicación geográfica asociada a la orden (latitud y longitud)
 );
 
+-- Tabla repartidor
+CREATE TABLE Repartidor (
+                            id_repartidor SERIAL PRIMARY KEY,    -- Identificador único del cliente
+                            nombre VARCHAR(255) NOT NULL,     -- Nombre completo del cliente
+                            contrasena VARCHAR(255) NOT NULL, -- Contraseña del cliente
+                            email VARCHAR(100) UNIQUE,        -- Correo electrónico del cliente (único)
+                            telefono VARCHAR(20)              -- Teléfono de contacto
+);
+
 -- Tabla Orden
 CREATE TABLE Orden (
     id_orden SERIAL PRIMARY KEY,        -- Identificador único de la orden
@@ -33,7 +42,9 @@ CREATE TABLE Orden (
     id_cliente INTEGER NOT NULL,        -- Clave foránea a Cliente
     total DECIMAL(10, 2) NOT NULL,      -- Total a pagar por la orden
     ubicacion GEOGRAPHY(POINT, 4326),   -- Ubicación geográfica asociada a la orden (latitud y longitud)
-    CONSTRAINT fk_orden_cliente FOREIGN KEY (id_cliente) REFERENCES Cliente (id_cliente) ON DELETE CASCADE
+    id_repartidor INTEGER NOT NULL,
+    CONSTRAINT fk_orden_cliente FOREIGN KEY (id_cliente) REFERENCES Cliente (id_cliente) ON DELETE CASCADE,
+    CONSTRAINT fk_orden_repartidor FOREIGN KEY (id_repartidor) REFERENCES Repartidor (id_repartidor) ON DELETE CASCADE
 );
 
 -- Tabla Producto

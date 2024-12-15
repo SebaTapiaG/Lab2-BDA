@@ -21,7 +21,12 @@ public class OrdenEntity {
     private double latitud;
     private double longitud;
 
-    public OrdenEntity(int id_orden, Timestamp fecha_orden, String estado, int id_cliente, double total, double latitud, double longitud) {
+    private int id_repartidor;
+
+    public OrdenEntity(int id_orden, Timestamp fecha_orden,
+                       String estado, int id_cliente,
+                       double total, double latitud,
+                       double longitud, int id_repartidor) {
         this.id_orden = id_orden;
         this.fecha_orden = fecha_orden;
         this.estado = estado;
@@ -29,6 +34,7 @@ public class OrdenEntity {
         this.total = total;
         this.latitud = latitud;
         this.longitud = longitud;
+        this.id_repartidor = id_repartidor;
     }
 
     public int getId_orden() {
@@ -87,5 +93,11 @@ public class OrdenEntity {
         this.longitud = longitud;
     }
 
+    public int getId_repartidor() {
+        return id_repartidor;
+    }
 
+    public void setId_repartidor(int id_cliente) {
+        this.id_repartidor = id_cliente;
+    }
 }
