@@ -9,6 +9,8 @@ import OrdersView from '../views/OrdersView.vue';
 import RegisterRepartidorView from '../views/RegisterDeliveryView.vue';
 import MapView from '../views/MapView.vue';
 
+
+
 const routes = [
     {
         path: '/',
@@ -55,6 +57,8 @@ const routes = [
 			name: 'Mapa',
 			component: MapView,
 		}
+		
+
 ];
 
 const router = createRouter({
