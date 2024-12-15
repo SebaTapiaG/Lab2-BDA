@@ -61,10 +61,11 @@ export default {
     },
     // Marcar una orden como completada
     async marcarComoCompletada() {
+			console.log(this.ordenSeleccionada)
       try {
         if (this.ordenSeleccionada.id_orden) {
-          await ordenesService.updateEstado(this.ordenSeleccionada.id_orden, "completada");
-          alert("Orden marcada como completada.");
+          await ordenesService.updateEstado(this.ordenSeleccionada.id_orden, "enviada");
+          alert("Orden marcada como enviada.");
           this.cargarOrdenes(); // Actualiza la lista de órdenes
           this.cancelarSeleccion(); // Limpia la selección
         }

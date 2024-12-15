@@ -55,6 +55,7 @@ public class OrdenController {
 
     @PutMapping("/updateEstado/{id_orden}/{estado}")
     public ResponseEntity<Object> updateEstado(@PathVariable int id_orden, @PathVariable String estado) {
+        
         return ordenService.updateEstado(id_orden, estado);
     }
 
