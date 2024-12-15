@@ -49,16 +49,14 @@ public class OrdenController {
         return ordenService.findByCliente(id_cliente);
     }
 
-<<<<<<< Updated upstream
     @PutMapping("/updateEstado/{id_orden}/{estado}")
     public ResponseEntity<Object> updateEstado(@PathVariable int id_orden, @PathVariable String estado) {
         return ordenService.updateEstado(id_orden, estado);
     }
-=======
+
     @GetMapping("/findDeliveryCompletedInArea/{id_zona}")
     public ResponseEntity<List<RepartidorDTO>> findDeliveryCompletedInArea(@PathVariable int id_zona){
         return ordenService.findDeliveryCompletedInArea(id_zona);
     }
 
->>>>>>> Stashed changes
 }

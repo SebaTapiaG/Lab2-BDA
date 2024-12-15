@@ -39,12 +39,10 @@ public class OrdenService {
         return ordenRepository.delete(id_orden);
     }
 
-<<<<<<< Updated upstream
     public ResponseEntity updateEstado(int id_orden, String estado) {
         return ordenRepository.updateEstado(id_orden, estado);
-=======
+    }
     public ResponseEntity<List<RepartidorDTO>> findDeliveryCompletedInArea(int id_zona) {
         return ordenRepository.findDeliveryCompletedInArea(id_zona);
->>>>>>> Stashed changes
     }
 }

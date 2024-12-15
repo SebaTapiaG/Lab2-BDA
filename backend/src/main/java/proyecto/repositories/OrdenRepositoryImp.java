@@ -191,7 +191,6 @@ public class OrdenRepositoryImp implements OrdenRepository {
     }
 
     @Override
-<<<<<<< Updated upstream
     public ResponseEntity<Object> updateEstado(int id_orden, String estado) {
         try(Connection conn = sql2o.open()){
             conn.createQuery("UPDATE orden SET estado = :estado WHERE id_orden = :id_orden")
@@ -204,7 +203,6 @@ public class OrdenRepositoryImp implements OrdenRepository {
         }
     }
 
-=======
     public ResponseEntity<List<RepartidorDTO>> findDeliveryCompletedInArea(int idZona) {
         String query = """
         SELECT DISTINCT r.nombre 
@@ -230,6 +228,4 @@ public class OrdenRepositoryImp implements OrdenRepository {
                     .body(Collections.emptyList());
         }
     }
->>>>>>> Stashed changes
-
 }
