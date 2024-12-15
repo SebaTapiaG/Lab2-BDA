@@ -3,8 +3,8 @@ package proyecto.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import proyecto.dto.RepartidorDTO;
 import proyecto.entities.OrdenEntity;
-import proyecto.repositories.ClienteRepository;
 import proyecto.repositories.OrdenRepository;
 
 import java.util.List;
@@ -39,7 +39,12 @@ public class OrdenService {
         return ordenRepository.delete(id_orden);
     }
 
+<<<<<<< Updated upstream
     public ResponseEntity updateEstado(int id_orden, String estado) {
         return ordenRepository.updateEstado(id_orden, estado);
+=======
+    public ResponseEntity<List<RepartidorDTO>> findDeliveryCompletedInArea(int id_zona) {
+        return ordenRepository.findDeliveryCompletedInArea(id_zona);
+>>>>>>> Stashed changes
     }
 }

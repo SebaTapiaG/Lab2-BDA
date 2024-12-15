@@ -2,6 +2,7 @@ package proyecto.repositories;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
+import proyecto.dto.RepartidorDTO;
 import proyecto.entities.OrdenEntity;
 
 import java.util.List;
@@ -21,4 +22,6 @@ public interface OrdenRepository {
     ResponseEntity updateEstado(int id_orden, String estado);
 
     ResponseEntity delete(int id_orden);
+
+    ResponseEntity<List<RepartidorDTO>> findDeliveryCompletedInArea(int id_zona);
 }

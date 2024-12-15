@@ -20,7 +20,7 @@ INSERT INTO Producto (nombre, descripcion, precio, stock, estado, id_categoria) 
 ('Pelota de fútbol', 'Pelota oficial tamaño 5', 29.99, 100, 'disponible', 5),
 ('Muñeca', 'Muñeca interactiva con accesorios', 39.99, 25, 'disponible', 4);
 
--- Población 1
+-- Población Repartidor
 INSERT INTO Repartidor (nombre, contrasena, email, telefono) VALUES
 ('Juan Pérez', 'password123', 'juan.perez@example.com', '987654321'),
 ('María González', 'securePass456', 'maria.gonzalez@example.com', '912345678'),
@@ -29,8 +29,8 @@ INSERT INTO Repartidor (nombre, contrasena, email, telefono) VALUES
 
 -- Poblar Orden con ubicación geográfica
 INSERT INTO Orden (fecha_orden, estado, id_cliente, total, ubicacion, id_repartidor) VALUES
-('2024-11-01 14:30:00', 'pendiente', 1, 749.98, ST_GeogFromText('SRID=4326;POINT(-70.6693 -33.4489)'), 1), -- Ubicación asociada al cliente Juan Pérez
-('2024-11-02 10:15:00', 'pagada', 2, 29.99, ST_GeogFromText('SRID=4326;POINT(-70.6417 -33.4691)'), 2), -- Ubicación asociada al cliente Ana Gómez
+('2024-11-01 14:30:00', 'completada', 1, 749.98, ST_GeogFromText('SRID=4326;POINT(-70.655 -33.455)'), 1), -- Ubicación asociada al cliente Juan Pérez
+('2024-11-02 10:15:00', 'completada', 2, 29.99, ST_GeogFromText('SRID=4326;POINT(-70.655 -33.455)'), 2), -- Ubicación asociada al cliente Ana Gómez
 ('2024-11-03 18:45:00', 'enviada', 1, 499.99, ST_GeogFromText('SRID=4326;POINT(-70.6693 -33.4489)'), 3); -- Ubicación asociada al cliente Juan Pérez
 
 -- Poblar detalle orden

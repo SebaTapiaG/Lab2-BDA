@@ -1,16 +1,18 @@
 package proyecto.repositories;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
+import proyecto.dto.RepartidorDTO;
 import proyecto.entities.Detalle_OrdenEntity;
 import proyecto.entities.OrdenEntity;
 import proyecto.entities.ProductoEntity;
 
-import java.text.SimpleDateFormat;
 import java.sql.Timestamp;
+import java.util.Collections;
 import java.util.List;
 
 @Repository
@@ -189,6 +191,7 @@ public class OrdenRepositoryImp implements OrdenRepository {
     }
 
     @Override
+<<<<<<< Updated upstream
     public ResponseEntity<Object> updateEstado(int id_orden, String estado) {
         try(Connection conn = sql2o.open()){
             conn.createQuery("UPDATE orden SET estado = :estado WHERE id_orden = :id_orden")
@@ -201,5 +204,32 @@ public class OrdenRepositoryImp implements OrdenRepository {
         }
     }
 
+=======
+    public ResponseEntity<List<RepartidorDTO>> findDeliveryCompletedInArea(int idZona) {
+        String query = """
+        SELECT DISTINCT r.nombre 
+        FROM Orden o
+        JOIN Repartidor r ON o.id_repartidor = r.id_repartidor
+        JOIN Zonas z ON ST_Contains(z.area::GEOMETRY, o.ubicacion::GEOMETRY)
+        WHERE z.id_zona = :idZona
+        AND o.estado = 'completada';
+        """;
+
+        try (Connection conn = sql2o.open()) {
+            List<RepartidorDTO> repartidores = conn.createQuery(query)
+                    .addParameter("idZona", idZona)
+                    .executeAndFetch(RepartidorDTO.class);
+
+            System.out.println("Resultados encontrados: " + repartidores.size());
+
+            return ResponseEntity.ok(repartidores);
+        } catch (Exception e) {
+            System.err.println("Error en la consulta: " + e.getMessage());
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Collections.emptyList());
+        }
+    }
+>>>>>>> Stashed changes
 
 }

@@ -1,10 +1,9 @@
 package proyecto.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import proyecto.dto.RepartidorDTO;
 import proyecto.entities.OrdenEntity;
-import proyecto.service.ClienteService;
 import proyecto.service.OrdenService;
 
 import java.util.List;
@@ -50,8 +49,16 @@ public class OrdenController {
         return ordenService.findByCliente(id_cliente);
     }
 
+<<<<<<< Updated upstream
     @PutMapping("/updateEstado/{id_orden}/{estado}")
     public ResponseEntity<Object> updateEstado(@PathVariable int id_orden, @PathVariable String estado) {
         return ordenService.updateEstado(id_orden, estado);
     }
+=======
+    @GetMapping("/findDeliveryCompletedInArea/{id_zona}")
+    public ResponseEntity<List<RepartidorDTO>> findDeliveryCompletedInArea(@PathVariable int id_zona){
+        return ordenService.findDeliveryCompletedInArea(id_zona);
+    }
+
+>>>>>>> Stashed changes
 }
