@@ -58,7 +58,4 @@ public class ClienteController {
     public ResponseEntity<Object> puntoMedio(@PathVariable int id_cliente1, @PathVariable int id_cliente2) {
         return clienteService.puntoMedio(id_cliente1, id_cliente2);
     }
-
-
-
 }

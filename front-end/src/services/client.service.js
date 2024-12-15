@@ -20,14 +20,18 @@ const register = userObj => {
     return httpClient.post("/api/cliente/register", userObj);
 }
 
-const puntoMedio = () =>{
-  return httpClient.get(`/api/cliente/${id}`);
-}
+const puntoMedio = (id1, id2) =>{
+  return httpClient.get(`/api/cliente/puntomedio/${id1}/${id2}`).then(response => {
+    console.log("Respuesta del backend:", response.data);
+    return response.data;
+  });
+};
 
 export default {
     getAll,
     get,
     getByEmail,
     login,
-    register
+    register,
+    puntoMedio
 };

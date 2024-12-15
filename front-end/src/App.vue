@@ -3,6 +3,7 @@ import { ref, computed } from "vue";
 import { useRouter } from "vue-router";
 import { auth } from "@/services/authService";
 import { Menubar } from "primevue";
+import 'leaflet/dist/leaflet.css';
 
 const router = useRouter();
 
@@ -11,6 +12,7 @@ const itemsNotLogged = ref([
 	{ label: "Home", icon: "pi pi-home", command: () => router.push("/") },
 	{ label: "Registrarme", command: () => router.push("/register") },
 	{ label: "Iniciar sesión", command: () => router.push("/login") },
+	{ label: "Mapa", command: () => router.push("/mapa") },
 ]);
 
 // Menú para usuarios logueados
