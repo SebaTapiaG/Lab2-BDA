@@ -48,8 +48,7 @@
 				<ButtonGroup>
 					<span v-if=" 3 <puntos.length ">
 						<Button @click="crearPoligono">Mostrar poligono</Button>
-						<Button @click="crearZona">Crear zona</Button>
-						
+						<Button @click="crearZona">Crear zona</Button>				
 					</span>
 				</ButtonGroup>
 		</div>

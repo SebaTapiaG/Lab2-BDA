@@ -4,7 +4,7 @@
     
     <!-- Listado de Ordenes -->
     <div v-if="ordenes.length" class="map-container">
-      <label for="orden">Ordenes por repartir:</label>
+      <label for="orden">Ordenes por repartir (Id):</label>
 			<br>
 			<select v-model="ordenSeleccionada" id="orden">
 				<option disabled value="">Selecciona una orden</option>
@@ -13,7 +13,7 @@
 				</option>
 			</select>
 		<br>
-		<button @click="seleccionarOrden(ordenSeleccionada)">Seleccionar</button>
+		<Button @click="seleccionarOrden(ordenSeleccionada)">Ver dirección</Button>
     </div>
     <div v-else>
       <p>No hay ordenes disponibles.</p>
@@ -24,18 +24,28 @@
 
     <!-- Confirmar Entrega -->
     <div v-if="ordenSeleccionada" class="confirmacion-container">
-        <h2>Confirmar Entrega</h2>
-        <p>Estás entregando la orden {{ ordenSeleccionada.id_orden }}.</p>
-        <button @click="marcarComoCompletada">Marcar como Completada</button>
-        <button @click="cancelarSeleccion">Cancelar</button>
+			<Card>
+				<template #title>Confirmar entrega</template>
+        <template #content>
+          <p>Estás entregando la orden {{ ordenSeleccionada.id_orden }}.</p>
+        	<Button @click="marcarComoCompletada">Marcar como Completada</Button>
+        	<Button @click="cancelarSeleccion">Cancelar</Button>
+        </template>
+			</Card>
       </div>
     </div>
 </template>
 
 <script>
 import ordenesService from '@/services/orden.service';
+import Button from 'primevue/button';
+import Card from 'primevue/card';
 
 export default {
+	components:{
+		Button,
+		Card
+	},
   data() {
     return {
       ordenes: [], // Lista de órdenes cargadas desde el backend
@@ -121,9 +131,6 @@ h1 {
 .confirmacion-container {
   margin-top: 1rem;
   padding: 1rem;
-  background-color: #eaf4fc;
-  border: 1px solid #cce0f1;
-  border-radius: 5px;
 }
 button {
   margin-right: 5px;
