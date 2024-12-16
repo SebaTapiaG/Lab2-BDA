@@ -7,6 +7,12 @@
 * Sebastián Tapia
 * Benjamin Zúñiga
 
+# Funcionalidades
+* Trigger_16_lab2.sql: Corresponde a la funcionalidad número 16 requerida, la cúal se implemento a través de un trigger.
+* Trigger_17.sql: Corresponde a la funcionalidad número 17 requerida.
+* Funcionalidad número 22: Fue implementada para el cliente, calcula el punto medio.
+
+
 # Herramientas de desarrollo
 
 ## Base de datos
