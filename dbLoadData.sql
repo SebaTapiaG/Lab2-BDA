@@ -7,10 +7,10 @@ INSERT INTO Categoria (nombre) VALUES
 ('Deportes');
 
 -- Poblar Clientes con ubicación geográfica
-INSERT INTO Cliente (nombre, contrasena, direccion, comuna, email, telefono) VALUES
-('Juan Pérez', 'password123', 'José Garrido 125', 'Maipú', 'juan.perez@example.com', '123456789'), -- Santiago, Chile
-('Ana Gómez', 'securepass456', 'Los viñedos 1675', 'San Felipe', 'ana.gomez@example.com', '987654321'), -- Región Metropolitana, Chile
-('Carlos Ruiz', 'mypassword789', 'Vicuña Mackenna 680', 'Peñaflor', 'carlos.ruiz@example.com', '555666777'); -- Providencia, Chile
+INSERT INTO Cliente (nombre, contrasena, direccion, comuna, email, telefono, ubicacion) VALUES
+('Juan Pérez', 'password123', 'José Garrido 125', 'Maipú', 'juan.perez@example.com', '123456789', ST_GeogFromText('SRID=4326;POINT(-70.655 -33.455)')) , -- Santiago, Chile
+('Ana Gómez', 'securepass456', 'Los viñedos 1675', 'San Felipe', 'ana.gomez@example.com', '987654321', ST_GeogFromText('SRID=4326;POINT(-70.655 -33.455)')), -- Región Metropolitana, Chile
+('Carlos Ruiz', 'mypassword789', 'Vicuña Mackenna 680', 'Peñaflor', 'carlos.ruiz@example.com', '555666777', ST_GeogFromText('SRID=4326;POINT(-70.6693 -33.4489)')); -- Providencia, Chile
 
 -- Poblar Productos
 INSERT INTO Producto (nombre, descripcion, precio, stock, estado, id_categoria) VALUES 

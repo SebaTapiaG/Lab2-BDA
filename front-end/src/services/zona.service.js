@@ -16,9 +16,14 @@ const findRepartidores = idZona => {
 	return httpCommon.get(`/api/orden/findDeliveryCompletedInArea/${idZona}`);
 }
 
+const create = data => {
+	return httpCommon.post(`/api/zona/create`, data)
+}
+
 export default {
 	getAll,
 	getById,
 	getByEstado,
 	findRepartidores,
+	create,
 }

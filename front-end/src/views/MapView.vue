@@ -21,7 +21,7 @@
           </option>
         </select>
 
-        <button @click="fetchMidpoint">Calcular Punto Medio</button>
+        <Button @click="fetchMidpoint">Calcular Punto Medio</Button>
       </div>
     </div>
 		<div>
@@ -33,13 +33,24 @@
             - {{ zona.nombre }}
           </option>
         </select>
-				<button @click="mostrarZona(zonaSeleccionada)">Ver zona</button>
-				<button @click="buscarRepartidores">Ver repartidores</button>
-				<div v-if=" 3 <puntos.length ">
-					<button @click="crearPoligono">Mostrar poligono</button>
-					<button @click="crearZona">Crear zona</button>
-					<button @click="limpiarPoligono">Limpiar puntos</button>
-				</div>
+				
+				<ButtonGroup>
+					<Button @click="mostrarZona(zonaSeleccionada)">Ver zona</Button>
+					<Button @click="buscarRepartidores">Ver repartidores</Button>
+					<Button @click="limpiarPoligono">Limpiar zona</Button>
+				</ButtonGroup>
+
+				<br>
+				<br>
+				<label for="nombreZona">Nombre:</label>
+				<input type="text" v-model="nombreZona" style="margin-right: 10px; height: 35px;"> </input>
+				<ButtonGroup>
+					<span v-if=" 3 <puntos.length ">
+						<Button @click="crearPoligono">Mostrar poligono</Button>
+						<Button @click="crearZona">Crear zona</Button>
+						
+					</span>
+				</ButtonGroup>
 		</div>
 		<br>
 
@@ -61,10 +72,17 @@ import clientService from '../services/client.service';
 import ubicacionIcon from '@/assets/ubicacion.png';
 import ubicacionPuntoMedio from '@/assets/ubicacion_pm.png';
 import zonaService from '@/services/zona.service';
-import { Button } from 'primevue';
+import Button  from 'primevue/button';
+import ButtonGroup from 'primevue/buttongroup';
+import Select from 'primevue/select';
 
 export default {
   name: 'MapView',
+	components:{
+		Button,
+		ButtonGroup,
+		Select
+	},
   data() {
     return {
       clientes: [],
@@ -73,6 +91,7 @@ export default {
       map: null,
 			puntos: [],
 			poligono: [],
+			nombreZona: null,
 			zonas: [],
 			repartidores: [],
 			zonaSeleccionada: null,
@@ -201,6 +220,8 @@ export default {
 
 			this.poligono = polygon
 
+			this.map.fitBounds(this.poligono.getBounds());
+
 			// 6️⃣ Agregar un popup al hacer clic en el polígono
 			polygon.bindPopup(`<b>${zona.nombre}</b><br>Estado: ${zona.estado}`);
 
@@ -224,6 +245,10 @@ export default {
 				fillOpacity: 0.5
 			}).addTo(this.map);
 			this.map.fitBounds(this.poligono.getBounds());
+			this.map.eachLayer(layer => {
+			if (layer instanceof L.Marker) {
+				this.map.removeLayer(layer);
+			}})
 		} else {
 			alert('Se necesitan al menos 3 puntos para crear un polígono.');
 		}
@@ -240,7 +265,39 @@ export default {
   });
 	},
 	async crearZona(){
-		
+		function convertirACoordenadasWKT(coordenadas ) {
+			if (!Array.isArray(coordenadas) || coordenadas.length === 0) {
+				throw new Error('El arreglo de coordenadas es inválido o está vacío');
+			}
+				// Asegurarnos de que el polígono esté cerrado (el primer y último punto deben coincidir)
+				const primerPunto = coordenadas[0];
+				const ultimoPunto = coordenadas[coordenadas.length - 1];
+				if (primerPunto[0] !== ultimoPunto[0] || primerPunto[1] !== ultimoPunto[1]) {
+					coordenadas.push(primerPunto); // Cierra el polígono automáticamente
+				}
+				const coordenadasTexto = coordenadas.map(([lng, lat]) => `${lng} ${lat}`).join(', ');
+				return `POLYGON((${coordenadasTexto}))`;
+			
+
+			throw new Error('Tipo de WKT no soportado. Usa POINT, LINESTRING o POLYGON');
+		}
+
+		console.log(this.puntos.length)
+
+		const areaZona = convertirACoordenadasWKT(this.puntos)
+
+		const zona = {
+			nombre: this.nombreZona,
+			estado: "Disponible",
+			area: convertirACoordenadasWKT(this.puntos)
+		}
+
+		console.log(areaZona)
+
+		await zonaService.create(zona)
+
+		this.cargarZonas()
+
 	}
   },
     mounted() {
