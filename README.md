@@ -8,7 +8,7 @@
 * Benjamin Zúñiga
 
 # Funcionalidades
-* Trigger_16_lab2.sql: Corresponde a la funcionalidad número 16 requerida, la cúal se implemento a través de un trigger.
+* Funcionalidad número 16: Fue implementada en el OrdenRepository.
 * Trigger_17.sql: Corresponde a la funcionalidad número 17 requerida.
 * Funcionalidad número 22: Fue implementada para el cliente, calcula el punto medio.
 
