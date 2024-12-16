@@ -265,6 +265,7 @@ export default {
       this.client1Marker = null
       this.client2Marker = null
 
+
       this.map.eachLayer(layer => {
         if (layer instanceof L.Marker) {
           this.map.removeLayer(layer);
