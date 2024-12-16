@@ -19,7 +19,7 @@ END;
 $$ LANGUAGE plpgsql;
 
 -- Crear el TRIGGER
-CREATE OR REPLACE TRIGGER trg_verificar_zona_restringida
+CREATE TRIGGER trg_verificar_zona_restringida
 BEFORE INSERT OR UPDATE ON Orden
 FOR EACH ROW
 EXECUTE FUNCTION fn_verificar_zona_restringida();
