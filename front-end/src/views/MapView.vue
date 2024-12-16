@@ -35,6 +35,11 @@
         </select>
 				<button @click="mostrarZona(zonaSeleccionada)">Ver zona</button>
 				<button @click="buscarRepartidores">Ver repartidores</button>
+				<div v-if=" 3 <puntos.length ">
+					<button @click="crearPoligono">Mostrar poligono</button>
+					<button @click="crearZona">Crear zona</button>
+					<button @click="limpiarPoligono">Limpiar puntos</button>
+				</div>
 		</div>
 		<br>
 
@@ -42,7 +47,10 @@
     <div id="map" style="height: 500px;"></div>
 		<br>
 		<div v-if="repartidores.length" class="map-container">
-			<h2>Repartidores {{ zona.nombre }}</h2>
+			<h2>Repartidores {{ zonaSeleccionada.nombre }}</h2>
+			<div v-for="repartidor in repartidores">
+				{{ repartidor.nombre }}
+			</div>
 		</div>
   </div>
 </template>
@@ -63,6 +71,8 @@ export default {
       client1Id: null,
       client2Id: null,
       map: null,
+			puntos: [],
+			poligono: [],
 			zonas: [],
 			repartidores: [],
 			zonaSeleccionada: null,
@@ -181,6 +191,7 @@ export default {
 			});
 			return leafletCoordinates;
 		}
+			if (this.poligono) this.map.removeLayer(this.poligono);
 			const polygonCoordinates = wktToLeafletCoordinates(zona.area); // Convertir WKT a coordenadas Leaflet
 			const polygon = L.polygon(polygonCoordinates, {
 				color: 'blue',               // Color del borde
@@ -188,19 +199,49 @@ export default {
 				fillOpacity: 0.5            // Opacidad del relleno
 			}).addTo(this.map);
 
+			this.poligono = polygon
+
 			// 6️⃣ Agregar un popup al hacer clic en el polígono
 			polygon.bindPopup(`<b>${zona.nombre}</b><br>Estado: ${zona.estado}`);
 
 			},
 		async buscarRepartidores(){
 			try{
-				const response = await zonaService.findRepartidores(zonaSelecciona.id)
+				const response = await zonaService.findRepartidores(this.zonaSeleccionada.id)
 				this.repartidores = response.data
+				console.log(response.data)
 			}catch(error){
 				console.log(error)
 			}
 
+		},
+		crearPoligono() {
+		if (this.puntos.length >= 3) {
+			if (this.poligono) this.map.removeLayer(this.poligono);
+			this.poligono = L.polygon(this.puntos, {
+				color: 'blue',
+				fillColor: 'cyan',
+				fillOpacity: 0.5
+			}).addTo(this.map);
+			this.map.fitBounds(this.poligono.getBounds());
+		} else {
+			alert('Se necesitan al menos 3 puntos para crear un polígono.');
 		}
+	},
+	limpiarPoligono(){
+		if (this.poligono) this.map.removeLayer(this.poligono);
+		this.poligono = []
+		this.puntos = []
+
+		this.map.eachLayer(layer => {
+    if (layer instanceof L.Marker) {
+      this.map.removeLayer(layer);
+    }
+  });
+	},
+	async crearZona(){
+		
+	}
   },
     mounted() {
       // Inicializar mapa
@@ -210,6 +251,14 @@ export default {
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
       }).addTo(this.map);
+
+			this.map.on('click', (e) => {
+				const { lat, lng } = e.latlng; // Obtener latitud y longitud del clic
+				this.puntos.push([lat, lng]); // Agregar el punto a la lista
+				L.marker([lat, lng]).addTo(this.map) // Mostrar un marcador en la posición clicada
+					.bindPopup(`Punto ${this.puntos.length}: [${lat.toFixed(5)}, ${lng.toFixed(5)}]`)
+					.openPopup();
+			});
   
       // Obtener la lista de clientes al cargar el componente
       this.fetchClientes();

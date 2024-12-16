@@ -32,7 +32,12 @@ INSERT INTO Repartidor (nombre, contrasena, email, telefono) VALUES
 INSERT INTO Orden (fecha_orden, estado, id_cliente, total, ubicacion, id_repartidor) VALUES
 ('2024-11-01 14:30:00', 'completada', 1, 749.98, ST_GeogFromText('SRID=4326;POINT(-70.655 -33.455)'), 1), -- Ubicación asociada al cliente Juan Pérez
 ('2024-11-02 10:15:00', 'completada', 2, 29.99, ST_GeogFromText('SRID=4326;POINT(-70.655 -33.455)'), 2), -- Ubicación asociada al cliente Ana Gómez
-('2024-11-03 18:45:00', 'enviada', 1, 499.99, ST_GeogFromText('SRID=4326;POINT(-70.6693 -33.4489)'), 3); -- Ubicación asociada al cliente Juan Pérez
+('2024-11-03 18:45:00', 'enviada', 1, 499.99, ST_GeogFromText('SRID=4326;POINT(-70.6693 -33.4489)'), 3), -- Ubicación asociada al cliente Juan Pérez
+('2024-11-04 09:00:00', 'completada', 1, 349.99,  ST_GeogFromText('SRID=4326;POINT(-70.645 -33.445)'), 1), -- Dentro de Zona 2 (Disponible)
+('2024-11-05 12:30:00', 'completada', 2, 129.99, ST_GeogFromText('SRID=4326;POINT(-70.635 -33.425)'), 2), -- Dentro de Zona 4 (Disponible)
+('2024-11-06 15:45:00', 'enviada', 3, 299.99, ST_GeogFromText('SRID=4326;POINT(-70.645 -33.445)'), 3), -- Dentro de Zona 2 (Disponible)
+('2024-11-07 18:20:00', 'completada', 4, 749.99, ST_GeogFromText('SRID=4326;POINT(-70.625 -33.425)'), 4), -- Dentro de Zona 4 (Disponible)
+('2024-11-08 20:00:00', 'enviada', 5, 549.99, ST_GeogFromText('SRID=4326;POINT(-70.645 -33.445)'), 2); -- Dentro de Zona 2 (Disponible)
 
 -- Poblar detalle orden
 INSERT INTO Detalle_Orden (id_orden, id_producto, cantidad, precio_unitario) VALUES 

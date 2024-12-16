@@ -230,7 +230,7 @@ public class OrdenRepositoryImp implements OrdenRepository {
         JOIN Repartidor r ON o.id_repartidor = r.id_repartidor
         JOIN Zonas z ON ST_Contains(z.area::GEOMETRY, o.ubicacion::GEOMETRY)
         WHERE z.id_zona = :idZona
-        AND o.estado = 'completada';
+        AND o.estado IN ('completada', 'enviada');
         """;
 
         try (Connection conn = sql2o.open()) {
