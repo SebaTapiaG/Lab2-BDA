@@ -75,9 +75,10 @@ public class ZonaRepositoryImp implements ZonaRepository {
     @Override
     public ResponseEntity<Object> create(ZonaEntity zona) {
         try (Connection conn = sql2o.open()) {
+            System.out.println(zona.getArea());
             int id_zona = (int) conn.createQuery(
                             "INSERT INTO zonas (nombre, estado, area) " +
-                                    "VALUES (:nombre, :estado, ST_GeogFromText('SRID=4326;' || :area))", true
+                                    "VALUES (:nombre, :estado, ST_GeogFromText(:area))", true
                     )
                     .addParameter("nombre", zona.getNombre())
                     .addParameter("estado", zona.getEstado())

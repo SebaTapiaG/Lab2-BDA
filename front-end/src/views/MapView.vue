@@ -42,6 +42,7 @@
 
 				<br>
 				<br>
+				<h2>Crear zona:</h2>
 				<label for="nombreZona">Nombre:</label>
 				<input type="text" v-model="nombreZona" style="margin-right: 10px; height: 35px;"> </input>
 				<ButtonGroup>
@@ -275,8 +276,8 @@ export default {
 				if (primerPunto[0] !== ultimoPunto[0] || primerPunto[1] !== ultimoPunto[1]) {
 					coordenadas.push(primerPunto); // Cierra el polígono automáticamente
 				}
-				const coordenadasTexto = coordenadas.map(([lng, lat]) => `${lng} ${lat}`).join(', ');
-				return `POLYGON((${coordenadasTexto}))`;
+				const coordenadasTexto = coordenadas.map(([lng, lat]) => `${lat} ${lng}`).join(', ');
+				return `SRID=4326;POLYGON((${coordenadasTexto}))`;
 			
 
 			throw new Error('Tipo de WKT no soportado. Usa POINT, LINESTRING o POLYGON');
