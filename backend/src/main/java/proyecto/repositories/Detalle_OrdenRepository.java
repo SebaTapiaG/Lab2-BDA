@@ -15,4 +15,6 @@ public interface Detalle_OrdenRepository {
     ResponseEntity<Object> update(Detalle_OrdenEntity detalle_orden);
 
     ResponseEntity<Object> delete(int id_detalle_orden);
+
+    ResponseEntity<List<Object>> getDetallesByOrdenId(int id_orden);
 }

@@ -45,4 +45,9 @@ public class Detalle_OrdenController {
         return ResponseEntity.ok().body(detalle_ordenService.delete(id_detalle_orden));
     }
 
+    @GetMapping("/productos/{id_orden}")
+    public ResponseEntity<List<Object>> findProductosByOrdenId(@PathVariable("id_orden") Integer id_orden) {
+        return detalle_ordenService.findProductosByOrdenId(id_orden);
+    }
+
 }

@@ -16,9 +16,14 @@ const update = data => {
     return httpCommon.put("/api/detalle_orden/update", data);
 }
 
+const findProductosByOrdenId = id => {
+    return httpCommon.get(`/api/detalle_orden/productos/${id}`);
+}
+
 export default {
     getAll,
     get,
     create,
-    update
+    update,
+    findProductosByOrdenId
 };

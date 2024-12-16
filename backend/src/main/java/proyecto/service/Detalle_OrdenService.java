@@ -36,4 +36,8 @@ public class Detalle_OrdenService {
         return detalle_ordenRepository.delete(id_detalle_orden);
     }
 
+    public ResponseEntity<List<Object>> findProductosByOrdenId(Integer id_orden) {
+        return detalle_ordenRepository.getDetallesByOrdenId(id_orden);
+    }
+
 }

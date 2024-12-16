@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
+import proyecto.dto.DetalleOrdenDTO;
 import proyecto.entities.Detalle_OrdenEntity;
 
 import java.util.List;
@@ -85,6 +86,30 @@ public class Detalle_OrdenRepositoryImp implements Detalle_OrdenRepository{
                     .executeUpdate();
             return ResponseEntity.ok().build();
         } catch (Exception e){
+            return ResponseEntity.status(500).body(null);
+        }
+    }
+
+    public ResponseEntity<List<Object>> getDetallesByOrdenId(int id_orden) {
+        String sql = """
+                SELECT p.nombre, d.cantidad, d.precio_unitario 
+                FROM detalle_orden d 
+                INNER JOIN producto p ON d.id_producto = p.id_producto 
+                WHERE d.id_orden = :id_orden
+                """;
+
+        try(Connection conn = sql2o.open()){
+            List<DetalleOrdenDTO> detalles = conn.createQuery(sql)
+                    .addParameter("id_orden", id_orden)
+                    .executeAndFetch(DetalleOrdenDTO.class);
+
+            List<Object> result = (List) detalles;
+            if(detalles.isEmpty()){
+                return ResponseEntity.noContent().build();
+            }
+            return ResponseEntity.ok(result);
+        } catch (Exception e){
+            System.out.println("Error: " + e.getMessage());
             return ResponseEntity.status(500).body(null);
         }
     }
